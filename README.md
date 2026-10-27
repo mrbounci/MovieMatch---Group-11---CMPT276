@@ -10,7 +10,9 @@ The primary target audience is groups of friends and movie enthusiasts who regul
 ## Existing Solutions and Improvements 
 
 Currently, people often decide what to watch by discussing their preferences, browsing streaming services, or checking movie reviews and ratings online. Platforms such as IMDb and Letterboxd allow users to discover movies, read reviews, and view ratings. However, these platforms primarily focus on individual movie discovery and reviewing rather than collaborative movie selection.
+
 Other applications, such as Cinelect, already provide group-based movie selection and voting. However, Cinelect lacks functionality outside voting, unlike MovieMatch which will allow users to interact with movies in more ways, such as user-written reviews, personalized recommendations, and community-based movie rankings that allow for better decision making.
+
 MovieMatch will combine these features with a group voting system. Users will be able to nominate movies, vote on their preferred choices, and use recommendations or rankings when they do not already have movies in mind. This will provide a more convenient way for groups to reach a decision.
 
 
@@ -18,9 +20,13 @@ MovieMatch will combine these features with a group voting system. Users will be
 
 Our application will consist of five main epics, providing enough work to divide responsibilities among five group members. 
 User Authentication and Account Management: Users will be able to sign up, log in, manage their accounts, and reset their passwords using their registered email addresses in their profile. They will also be able to friend other users and customize their profile.
+
 Group Movie Voting: Users will be able to create movie voting sessions, invite friends, nominate movies, and vote to determine the group’s preferred choice. You can also adjust the weight of votes by identifying hosts and manually setting people’s voting weights to be less than or greater than the default weight of 1. Music will also play depending on the (28) genre that is winning the vote.
+
 Movie Recommendations: Users will receive movie suggestions based on genres, popularity, and ratings, helping them discover movies to add to voting sessions. There will also be a MovieScramble feature that directs users to a random set of movies, that they can save and later vote on.
+
 Search: Users will be able to manually apply a filter by genre, director, actors, and release era to search for a movie with the selected items. They will also be able search for site user profiles. Users will also be able to see and delete previous search history.
+
 Movie Reviews and Rankings: Registered users will be able to rate movies and write reviews to share their opinions with others, which can also be seen through their profile. Users will also be able to comment on movie reviews and report inappropriate/spam reviews. Movies will be ranked based on user ratings and feedback. Groups can browse these rankings to discover popular movies and add them to their voting sessions. 
 
 ## API and Technology 

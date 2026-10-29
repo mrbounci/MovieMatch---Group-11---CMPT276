@@ -12,6 +12,8 @@ public class users {
     private String displayname;
     private String password;
 
+    public users() {}
+
     public users(String username, String displayname, String password) {
         this.username = username;
         this.displayname = displayname;

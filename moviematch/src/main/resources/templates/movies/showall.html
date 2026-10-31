@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <title>movies</title>
+</head>
+<body>
+    <main>
+        <h1>Movie Voting Screen</h1>
+        <p><a href="/movies/new">Submit a movie</a></p>
+        <p th:if="${#lists.isEmpty(movies)}">No movies have been submitted yet.</p>
+        <table th:unless="${#lists.isEmpty(movies)}">
+            <thead>
+                <tr>
+                    <th>Movie</th>
+                    <th>Genre</th>
+                    <th>Actions</th>
+                    <th>Blurb</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="movie : ${movies}">
+                    
+                
+
+                    <td th:text="${movie.movieTitle}"></td>
+                    <td th:text="${movie.movieGenre}"></td>
+                    <td th:text="${movie.movieBlurb}"></td>
+                    <td th:text="${movie.movieRating}"></td>
+                    <td>
+                        <a th:href="@{/movies/{id}(id=${movie.uid})}">View</a>
+                            
+                        <a th:href="@{/movies/{id}/edit(id=${movie.uid})}">Edit</a>
+                        
+                        <a th:href="@{/movies/{id}/delete(id=${movie.uid})}">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    
+</body>
+</html>

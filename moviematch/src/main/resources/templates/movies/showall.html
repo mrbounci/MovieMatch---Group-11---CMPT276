@@ -15,8 +15,9 @@
                 <tr>
                     <th>Movie</th>
                     <th>Genre</th>
+                    <th>Rating</th>
+                    <th>VotesNotWorking</th>
                     <th>Actions</th>
-                    <th>Blurb</th>
                     
                 </tr>
             </thead>
@@ -27,8 +28,8 @@
 
                     <td th:text="${movie.movieTitle}"></td>
                     <td th:text="${movie.movieGenre}"></td>
-                    <td th:text="${movie.movieBlurb}"></td>
                     <td th:text="${movie.movieRating}"></td>
+                    <td th:text="${movie.movieBlurb}"></td>
                     <td>
                         <a th:href="@{/movies/{id}(id=${movie.uid})}">View</a>
                             

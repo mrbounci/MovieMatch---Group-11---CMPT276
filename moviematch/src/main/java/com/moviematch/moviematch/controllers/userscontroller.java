@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpServletResponse;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Controller
 public class userscontroller {
     @Autowired
     private usersrepository userRepo;
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @GetMapping("/user-handling") 
     public String showSignupPage() {
         return "users/user-handling";
@@ -34,7 +38,8 @@ public class userscontroller {
         String newUsername = newuser.get("username");
         String newDisplayname = newuser.get("displayname");
         String newPassword = newuser.get("password");
-        userRepo.save(new users(newUsername, newDisplayname, newPassword));
+        String hashedPassword = passwordEncoder.encode(newPassword);
+        userRepo.save(new users(newUsername, newDisplayname, hashedPassword));
 
         return "redirect:/account-created";
     }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+    <title>MovieMatch - Account Creation</title>
+    <body>
+        <header>
+            <h1>CREATE AN ACCOUNT</h1>
+        </header>
+        <form action="/user-handling" method="post">
+            <label for="username">Choose your username (Must be unique):</label>
+            <input type="text" id="username" movieTitle="username"><br>
+            <label for="displayname">Choose your display movieTitle (You will be able to modify this any time):</label>
+            <input type="text" id="displayname" movieTitle="displayname"><br><br>
+            <label for="password">Choose your password (Must be longer than 10 characters):</label>
+            <input type="text" id="password" movieTitle="password"><br>
+            <label for="password">Retype your password:</label>
+            <input type="text" id="confirm_password" movieTitle="confirm_password"><br><br>
+            <button type="submit">CONFIRM ACCOUNT CREATION</button>
+        </form>
+    </body>
+    <footer>
+    </footer>
+</html>

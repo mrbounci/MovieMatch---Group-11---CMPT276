@@ -14,30 +14,38 @@ import jakarta.validation.Valid;
 import com.moviematch.moviematch.moviemodels.GENRE;
 import com.moviematch.moviematch.moviemodels.MovieInformation;
 import com.moviematch.moviematch.moviemodels.MovieRepository;
+import com.moviematch.moviematch.sessionmodels.SessionRepository;
+import com.moviematch.moviematch.sessionmodels.SessionInformation;
 
 @Controller
 public class movieController {
     private final MovieRepository MovieRepository;
+    private final SessionRepository SessionRepository;
 
-    public movieController(MovieRepository MovieRepository) {
+    public movieController(MovieRepository MovieRepository, SessionRepository SessionRepository) {
         this.MovieRepository = MovieRepository;
+        this.SessionRepository = SessionRepository;
     }
-
-    @GetMapping("/movies/new")
-    public String newMovie(Model model) {
+    
+    @GetMapping("/Asessions/{Sid}/movies/new")
+    public String newMovie(@PathVariable long Sid, Model model) {
         model.addAttribute("movie", new MovieForm());
         model.addAttribute("genres", GENRE.values());
+        model.addAttribute("AsessionId", Sid);
         return "movies/create";
     }
 
-    @GetMapping({"/", "/movies/main"})
-    public String showMovies(Model model) {
-        model.addAttribute("movies", MovieRepository.findAll());
+    @GetMapping({"/Asessions/{Sid}/movies/main", "/Asessions/{Sid}/movies/main"})
+    public String showMovies(@PathVariable long Sid, Model model) {
+        SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
+        model.addAttribute("movies", MovieRepository.findBySession(session));
+        model.addAttribute("AsessionId", Sid);
+        model.addAttribute("Asession", session);
         return "movies/showall";
     }
 
-    @PostMapping("/movies/add")
-    public String addMovie(@Valid @ModelAttribute("movie") MovieForm form,
+    @PostMapping("/Asessions/{Sid}/movies/add")
+    public String addMovie(@Valid @ModelAttribute("movie") MovieForm form, @PathVariable long Sid,
                             BindingResult bindingResult, Model model) {
         // if (form.getMovieTitle() != null && form.getMovieVoteCount() != 0) {
         //     bindingResult.rejectValue("movieTitle", "duplicate", "This movie has already been suggested");
@@ -48,51 +56,60 @@ public class movieController {
 
         MovieInformation movie = new MovieInformation();
         form.applyTo(movie);
+        SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
+        movie.setSession(session);
         MovieRepository.save(movie);
-        return "redirect:/movies/main";
+        return "redirect:/Asessions/"+ Sid +"/movies/main";
     }
 
-    @GetMapping("/movies/{id}")
-    public String showMovie(@PathVariable long id, Model model) {
+    @GetMapping("/Asessions/{Sid}/movies/{id}")
+    public String showMovie(@PathVariable long id, @PathVariable long Sid, Model model) {
         model.addAttribute("movie", findMovieInformation(id));
+        model.addAttribute("AsessionId", Sid);
+        SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
+        model.addAttribute("Asession", session);
         return "movies/details";
     }
 
-    @GetMapping("/movies/{id}/edit")
-    public String editMovie(@PathVariable long id, Model model) {
+    @GetMapping("/Asessions/{Sid}/movies/{id}/edit")
+    public String editMovie(@PathVariable long id, @PathVariable long Sid, Model model) {
         model.addAttribute("movie", MovieForm.from(findMovieInformation(id)));
         model.addAttribute("movieId", id);
+        model.addAttribute("AsessionId", Sid);
         model.addAttribute("genres", GENRE.values());
         return "movies/edit";
     }
 
-    @PostMapping("/movies/{id}/update")
+    @PostMapping("/Asessions/{Sid}/movies/{id}/update")
     public String updateMovie(@PathVariable long id,
+                              @PathVariable long Sid,
                                @Valid @ModelAttribute("movie") MovieForm form,
                                BindingResult bindingResult, Model model) {
         MovieInformation existing = findMovieInformation(id);
         if (bindingResult.hasErrors()) {
             model.addAttribute("movieId", id);
+             model.addAttribute("AsessionId", Sid);
             model.addAttribute("genres", GENRE.values());
             return "movies/edit";
         }
 
         form.applyTo(existing);
         MovieRepository.save(existing);
-        return "redirect:/movies/" + id;
+        return "redirect:/Asessions/"+ Sid +"/movies/" + id;
     }
 
-    @GetMapping("/movies/{id}/delete")
-    public String deletePage(@PathVariable long id, Model model) {
+    @GetMapping("/Asessions/{Sid}/movies/{id}/delete")
+    public String deletePage(@PathVariable long id, @PathVariable long Sid, Model model) {
         model.addAttribute("movie", findMovieInformation(id));
+        model.addAttribute("AsessionId", Sid);
         return "movies/delete";
     }
 
-    @PostMapping("/movies/{id}/delete")
-    public String deleteMovie(@PathVariable long id) {
+    @PostMapping("/Asessions/{Sid}/movies/{id}/delete")
+    public String deleteMovie(@PathVariable long id, @PathVariable long Sid) {
         MovieInformation movie = findMovieInformation(id);
         MovieRepository.delete(movie);
-        return "redirect:/movies/main";
+        return "redirect:/Asessions/"+ Sid +"/movies/main";
     }
 
     private String showCreateForm(Model model) {

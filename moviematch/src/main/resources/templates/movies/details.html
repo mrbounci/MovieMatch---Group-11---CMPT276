@@ -13,10 +13,10 @@
         <p>Blurb: <span th:text="${movie.movieRating}"></span></p>
 
         <p>
-            <a th:href="@{/movies/{id}/edit(id=${movie.uid})}">Edit</a>
-            <a th:href="@{/movies/{id}/delete(id=${movie.uid})}">Delete</a>
+            <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
+            <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
         </p>
-        <p><a th:href="@{/movies/main}">Back to movies</a></p>
+        <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${AsessionId})}">Back to movies</a></p>
     </main>
 </body>
 </html>

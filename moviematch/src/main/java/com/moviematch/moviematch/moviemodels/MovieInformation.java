@@ -1,19 +1,16 @@
 package com.moviematch.moviematch.moviemodels;
 
+import com.moviematch.moviematch.sessionmodels.SessionInformation;
+
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
 
 
 
@@ -43,6 +40,12 @@ public class MovieInformation {
 
     private int movieVoteCount;
 
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private SessionInformation session;
+
+
+    
     public MovieInformation(){
 
     }
@@ -104,5 +107,13 @@ public class MovieInformation {
 
     public String getRoleTitle() {
         return GenreConstructor.create(movieGenre).displayTitle();
+    }
+
+    public SessionInformation getSession() {
+        return session;
+    }
+
+    public void setSession(SessionInformation session) {
+        this.session = session;
     }
 }

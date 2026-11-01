@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <title>Submit a Session</title>
+</head>
+<body>
+    <main>
+        <h1>Submit a Session</h1>
+        <form method="post" th:action="@{/Asessions/add}" th:object="${Asession}">
+            <p>
+                <label for="sessionTitle">Session Title</label>
+                <input id="sessionTitle" type="text" th:field="*{sessionTitle}" required maxlength="100">
+                <span th:if="${#fields.hasErrors('sessionTitle')}" th:errors="*{sessionTitle}"></span>
+            </p>
+        
+            <p>
+                <label for="sessionBlurb">Blurb (optional)</label>
+                <textarea id="sessionBlurb" th:field="*{sessionBlurb}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('sessionBlurb')}" th:errors="*{sessionBlurb}"></span>
+            </p>
+            
+            <button type="submit">Save session</button>
+        </form>
+        <p><a href="/Asessions/main">View sessions</a></p>
+    </main>
+</body>
+</html>

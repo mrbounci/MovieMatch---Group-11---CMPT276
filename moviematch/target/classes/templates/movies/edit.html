@@ -9,7 +9,7 @@
     <main>
         <h1>Edit movie Submission</h1>
         <form method="post"
-              th:action="@{/movies/{id}/update(id=${movieId})}"
+              th:action="@{/Asessions/{Sid}/movies/{id}/update(Sid=${AsessionId},id=${movieId})}"
               th:object="${movie}">
             <p>
                 <label for="movieTitle">movieTitle</label>
@@ -36,7 +36,7 @@
             </p>
             <button type="submit">Update movie</button>
         </form>
-        <p><a th:href="@{/movies/{id}(id=${movieId})}">Cancel</a></p>
+        <p><a th:href="@{/Asessions/{Sid}/movies/{id}(Sid=${AsessionId},id=${movieId})}">Cancel</a></p>
     </main>
 </body>
 </html>

@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
-    <title>movies</title>
+    <title th:text="${Asession.sessionTitle}"> </title>
 </head>
 <body>
     <main>
-        <h1>Movie Voting Screen</h1>
-        <p><a href="/movies/new">Submit a movie</a></p>
+        <h1 th:text="${Asession.sessionTitle}"> </h1>
+        <p><a th:href=" @{/Asessions/{Sid}/movies/new(Sid=${AsessionId})}">Submit a movie</a></p>
         <p th:if="${#lists.isEmpty(movies)}">No movies have been submitted yet.</p>
         <table th:unless="${#lists.isEmpty(movies)}">
             <thead>
@@ -29,17 +29,17 @@
                     <td th:text="${movie.movieTitle}"></td>
                     <td th:text="${movie.movieGenre}"></td>
                     <td th:text="${movie.movieRating}"></td>
-                    <td th:text="${movie.movieBlurb}"></td>
                     <td>
-                        <a th:href="@{/movies/{id}(id=${movie.uid})}">View</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}(Sid=${AsessionId},id=${movie.uid})}">View</a>
                             
-                        <a th:href="@{/movies/{id}/edit(id=${movie.uid})}">Edit</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
                         
-                        <a th:href="@{/movies/{id}/delete(id=${movie.uid})}">Delete</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <p><a th:href="@{/Asessions/main}">Back to sessions</a></p>
     </main>
     
 </body>

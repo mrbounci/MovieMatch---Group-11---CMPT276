@@ -22,9 +22,6 @@ public class MovieForm {
 
     @NotNull(message = "Choose a genre.")
     private GENRE movieGenre;
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid;
     
 
     @Size(max = 1000, message = "Optional: Describe the movie, or Reasons to vote")
@@ -36,6 +33,9 @@ public class MovieForm {
     private int movieRating = 0;
 
     private int movieVoteCount = 1;
+    
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long uid;
 
     public static MovieForm from(MovieInformation movie) {
         MovieForm form = new MovieForm();
@@ -54,12 +54,12 @@ public class MovieForm {
         movie.setMovieRating(movieRating);
         movie.setMovieCount(movieVoteCount);
     }
-
-    public int getUid() {
+    
+    public long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(long uid) {
         this.uid = uid;
     }
 

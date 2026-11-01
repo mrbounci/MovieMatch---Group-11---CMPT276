@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Delete submission</title>
+</head>
+<body>
+
+<h1>Delete Submission?</h1>
+
+<p>
+    Are you sure you want to delete:
+</p>
+
+<p th:text="${Asession.sessionTitle}"></p>
+
+<form th:action="@{/Asessions/{id}/delete(id=${Asession.uid})}"
+      method="post">
+
+    <button type="submit">
+        Delete
+    </button>
+
+</form>
+
+<a th:href="@{/Asessions/{id}(id=${Asession.uid})}">
+    Cancel
+</a>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Session Details</title>
+</head>
+<body>
+    <main>
+        <h1>Session details</h1>
+
+        <p>Title: <span th:text="${Asession.sessionTitle}"></span></p>
+        <p>Blurb: <span th:text="${Asession.sessionBlurb}"></span></p>
+
+        <p>
+            <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
+            <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
+        </p>
+        <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${Asession.uid})}">Go to MovieVoteLobby?</a></p>
+        <p><a th:href="@{/Asessions/main}">Back to sessions</a></p>
+    </main>
+</body>
+</html>

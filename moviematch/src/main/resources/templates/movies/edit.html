@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <title>Edit Movie</title>
+</head>
+<body>
+    <main>
+        <h1>Edit movie Submission</h1>
+        <form method="post"
+              th:action="@{/movies/{id}/update(id=${movieId})}"
+              th:object="${movie}">
+            <p>
+                <label for="movieTitle">movieTitle</label>
+                <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">
+                <span th:if="${#fields.hasErrors('movieTitle')}" th:errors="*{movieTitle}"></span>
+            </p>
+            <p>
+                <label for="movieGenre">Movie Genre</label>
+                <select id="movieGenre" th:field="*{movieGenre}" required>
+                    <option value="">Choose a Genre</option>
+                    <option th:each="genre : ${genres}" th:value="${genre}" th:text="${genre}"></option>
+                </select>
+                <span th:if="${#fields.hasErrors('movieGenre')}" th:errors="*{movieGenre}"></span>
+            </p>
+            <p>
+                <label for="movieBlurb">Blurb (optional)</label>
+                <textarea id="movieBlurb" th:field="*{movieBlurb}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('movieBlurb')}" th:errors="*{movieBlurb}"></span>
+            </p>
+             <p>
+                <label for="movieRating">Rating (1-10)</label>
+                <input id="movieRating" type="number" th:field="*{movieRating}" min="1" max="10" required>
+                <span th:if="${#fields.hasErrors('movieRating')}" th:errors="*{movieRating}"></span>
+            </p>
+            <button type="submit">Update movie</button>
+        </form>
+        <p><a th:href="@{/movies/{id}(id=${movieId})}">Cancel</a></p>
+    </main>
+</body>
+</html>

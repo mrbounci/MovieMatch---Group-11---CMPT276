@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Host dashboard · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<main>
+    <!-- Filled by PageController.hostDashboard():
+         ${sessions}     SessionCards for sessions this user HOSTS
+         ${totalMovies}  movies nominated across those sessions -->
+    <div class="page-header">
+        <div>
+            <span class="badge badge-host">Host</span>
+            <h1>Host dashboard</h1>
+            <p>Manage the voting sessions you created.</p>
+        </div>
+        <div class="actions">
+            <a class="btn btn-host" th:href="@{/Asessions/new}">+ New session</a>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <div class="stat-tile">
+            <div class="value" th:text="${#lists.size(sessions)}">2</div>
+            <div class="label">Sessions you host</div>
+        </div>
+        <div class="stat-tile">
+            <div class="value" th:text="${totalMovies}">7</div>
+            <div class="label">Movies nominated</div>
+        </div>
+    </div>
+
+    <div class="empty" th:if="${#lists.isEmpty(sessions)}">
+        <p>You aren't hosting any sessions yet. Create one and you become its host.</p>
+        <a class="btn btn-host" th:href="@{/Asessions/new}">Create a session</a>
+    </div>
+
+    <div class="grid" th:unless="${#lists.isEmpty(sessions)}">
+        <article class="card session-card hosted" th:each="card : ${sessions}">
+            <h3 th:text="${card.session.sessionTitle}">Friday movie night</h3>
+            <p class="blurb" th:text="${card.session.sessionBlurb}">Something scary but not too scary.</p>
+
+            <div class="stats">
+                <span><strong th:text="${card.movieCount}">4</strong> movies</span>
+                <span th:if="${card.leadingMovie != null}">
+                    Leading: <strong th:text="${card.leadingMovie}">Alien</strong>
+                    (<span th:text="${card.leadingVotes}">3</span> votes)
+                </span>
+                <span th:if="${card.leadingMovie == null}">No votes yet</span>
+            </div>
+
+            <!-- Host-only controls -->
+            <div class="actions">
+                <a class="btn btn-small"
+                   th:href="@{/Asessions/{id}/movies/main(id=${card.session.uid})}">Open voting</a>
+                <a class="btn btn-secondary btn-small"
+                   th:href="@{/Asessions/{id}/edit(id=${card.session.uid})}">Edit</a>
+                <form method="post"
+                      th:action="@{/Asessions/{id}/movies/reset(id=${card.session.uid})}"
+                      onsubmit="return confirm('Reset all votes in this session to 0?');">
+                    <button type="submit" class="btn-secondary btn-small">Reset votes</button>
+                </form>
+                <a class="btn btn-danger btn-small"
+                   th:href="@{/Asessions/{id}/delete(id=${card.session.uid})}">Delete</a>
+            </div>
+        </article>
+    </div>
+</main>
+</body>
+</html>

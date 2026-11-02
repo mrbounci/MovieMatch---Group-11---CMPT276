@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log in · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <a class="brand" th:href="@{/login}">Movie<span>Match</span></a>
+        <p class="tagline">Pick a movie together, without the argument.</p>
+
+        <!-- LoginController redirects to /login?error or /login?logout -->
+        <div class="alert alert-error" th:if="${param.error}">
+            Incorrect username or password.
+        </div>
+        <div class="alert alert-success" th:if="${param.logout}">
+            You've been logged out.
+        </div>
+
+        <!-- POST /login is handled by auth/LoginController -->
+        <form method="post" th:action="@{/login}">
+            <p>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       autocomplete="username" required autofocus>
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       autocomplete="current-password" required>
+            </p>
+            <button type="submit" class="btn-block">Log in</button>
+        </form>
+
+        <p class="switch">
+            New to MovieMatch? <a th:href="@{/user-handling}">Create an account</a>
+        </p>
+    </div>
+</body>
+</html>

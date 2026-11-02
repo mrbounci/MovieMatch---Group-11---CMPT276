@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<main>
+    <!-- Filled by PageController.userDashboard():
+         ${sessions}      list of SessionCard
+         ${hostingCount}  how many of them this user hosts -->
+    <div class="page-header">
+        <div>
+            <h1>Welcome back, <span th:text="${currentDisplayName}">Jacob</span></h1>
+            <p>Join a voting session, or start your own and invite friends.</p>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/Asessions/new}">+ New session</a>
+        </div>
+    </div>
+
+    <div class="stat-row">
+        <div class="stat-tile">
+            <div class="value" th:text="${#lists.size(sessions)}">3</div>
+            <div class="label">Open sessions</div>
+        </div>
+        <div class="stat-tile">
+            <div class="value" th:text="${hostingCount}">1</div>
+            <div class="label">You're hosting</div>
+        </div>
+    </div>
+
+    <h2>Voting sessions</h2>
+
+    <div class="empty" th:if="${#lists.isEmpty(sessions)}">
+        <p>No voting sessions yet.</p>
+        <a class="btn" th:href="@{/Asessions/new}">Create the first one</a>
+    </div>
+
+    <div class="grid" th:unless="${#lists.isEmpty(sessions)}">
+        <article class="card session-card" th:each="card : ${sessions}"
+                 th:classappend="${card.hostedByMe} ? 'hosted'">
+            <div th:if="${card.hostedByMe}">
+                <span class="badge badge-host">You're the host</span>
+            </div>
+            <h3 th:text="${card.session.sessionTitle}">Friday movie night</h3>
+            <p class="blurb" th:text="${card.session.sessionBlurb}">Something scary but not too scary.</p>
+
+            <div class="stats">
+                <span><strong th:text="${card.movieCount}">4</strong> movies</span>
+                <span th:if="${card.leadingMovie != null}">
+                    Leading: <strong th:text="${card.leadingMovie}">Alien</strong>
+                </span>
+                <span th:if="${card.leadingMovie == null}">No votes yet</span>
+            </div>
+
+            <div class="actions">
+                <a class="btn btn-small"
+                   th:href="@{/Asessions/{id}/movies/main(id=${card.session.uid})}">Vote</a>
+                <a class="btn btn-secondary btn-small"
+                   th:href="@{/Asessions/{id}(id=${card.session.uid})}">Details</a>
+                <a class="btn btn-host btn-small" th:if="${card.hostedByMe}"
+                   th:href="@{/host}">Manage</a>
+            </div>
+        </article>
+    </div>
+</main>
+</body>
+</html>

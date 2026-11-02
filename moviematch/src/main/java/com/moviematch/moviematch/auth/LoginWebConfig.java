@@ -17,7 +17,9 @@ public class LoginWebConfig implements WebMvcConfigurer {
                     "/",
                     "/movies/**",
                     "/groups/**",
-                    "/voting/**"
+                    "/voting/**",
+                    "/Asessions",
+                    "/Asessions/**"
                 );
     }
 }

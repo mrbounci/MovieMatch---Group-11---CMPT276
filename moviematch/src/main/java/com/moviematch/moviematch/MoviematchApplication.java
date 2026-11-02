@@ -9,10 +9,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @SpringBootApplication
 public class MoviematchApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(MoviematchApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MoviematchApplication.class, args);
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http

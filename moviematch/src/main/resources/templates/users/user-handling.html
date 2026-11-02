@@ -1,32 +1,63 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
-    <title>MovieMatch - Account Creation</title>
-    <body>
-        <header>
-            <h1>CREATE AN ACCOUNT</h1>
-        </header>
-        <form action="/user-handling" method="post">
-            <label for="username">Choose your username (Must be unique):</label>
-<<<<<<< HEAD
-            <input type="text" id="username" name="username"><br>
-            <label for="displayname">Choose your display name (You will be able to modify this any time):</label>
-            <input type="text" id="displayname" name="displayname"><br><br>
-            <label for="password">Choose your password (Must be longer than 10 characters):</label>
-            <input type="text" id="password" name="password"><br>
-            <label for="password">Retype your password:</label>
-            <input type="text" id="confirm_password" name="confirm_password"><br><br>
-=======
-            <input type="text" id="username" movieTitle="username"><br>
-            <label for="displayname">Choose your display movieTitle (You will be able to modify this any time):</label>
-            <input type="text" id="displayname" movieTitle="displayname"><br><br>
-            <label for="password">Choose your password (Must be longer than 10 characters):</label>
-            <input type="text" id="password" movieTitle="password"><br>
-            <label for="password">Retype your password:</label>
-            <input type="text" id="confirm_password" movieTitle="confirm_password"><br><br>
->>>>>>> f564b4673c519642c1d3ee15f7a1968fa8117c53
-            <button type="submit">CONFIRM ACCOUNT CREATION</button>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create an account · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <a class="brand" th:href="@{/login}">Movie<span>Match</span></a>
+        <p class="tagline">Create an account to start voting.</p>
+
+        <!-- POST /user-handling is handled by controllers/userscontroller.
+             Field names (username, displayname, password) must match what it reads. -->
+        <form id="register-form" method="post" th:action="@{/user-handling}">
+            <p>
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username"
+                       autocomplete="username" required maxlength="50">
+                <small class="hint">Must be unique. You'll use it to log in.</small>
+            </p>
+            <p>
+                <label for="displayname">Display name</label>
+                <input type="text" id="displayname" name="displayname" required maxlength="50">
+                <small class="hint">What friends see. You can change it any time.</small>
+            </p>
+            <p>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password"
+                       autocomplete="new-password" required minlength="10">
+                <small class="hint">At least 10 characters.</small>
+            </p>
+            <p>
+                <label for="confirm_password">Confirm password</label>
+                <input type="password" id="confirm_password" name="confirm_password"
+                       autocomplete="new-password" required>
+            </p>
+            <button type="submit" class="btn-block">Create account</button>
         </form>
-    </body>
-    <footer>
-    </footer>
+
+        <p class="switch">
+            Already have an account? <a th:href="@{/login}">Log in</a>
+        </p>
+    </div>
+
+    <script>
+        // Block the form if the two passwords don't match.
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("confirm_password");
+
+        function checkMatch() {
+            if (confirmPassword.value && confirmPassword.value !== password.value) {
+                confirmPassword.setCustomValidity("Passwords don't match.");
+            } else {
+                confirmPassword.setCustomValidity("");
+            }
+        }
+        password.addEventListener("input", checkMatch);
+        confirmPassword.addEventListener("input", checkMatch);
+    </script>
+</body>
 </html>

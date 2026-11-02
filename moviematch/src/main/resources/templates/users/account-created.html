@@ -1,5 +1,17 @@
 <!DOCTYPE html>
-<html>
-<head><title>Account created</title></head>
-<body><h1>Account created!</h1></body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account created · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body class="auth-page">
+    <div class="auth-card">
+        <a class="brand" th:href="@{/login}">Movie<span>Match</span></a>
+        <div class="alert alert-success">Your account was created.</div>
+        <p class="tagline">Log in to create a voting session or join one.</p>
+        <a class="btn btn-block" th:href="@{/login}">Go to log in</a>
+    </div>
+</body>
 </html>

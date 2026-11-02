@@ -242,3 +242,44 @@ table + p, main > form + p, .card + p, .session-list + p { margin-top: 1.5rem; }
     .auth { grid-template-columns: 1fr; gap: 2rem; min-height: 0; padding-top: 2rem; }
     .auth-intro .brand { margin-bottom: 1.5rem; }
 }
+
+
+/* ---------- Movie title lookup (TMDB) on the Submit a movie form ---------- */
+.lookup-field { position: relative; }
+
+.suggestions {
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    margin: 0.25rem 0 0;
+    padding: 0.25rem;
+    list-style: none;
+    background: var(--wash);
+    border: 1px solid #3b3746;
+    border-radius: 6px;
+}
+.suggestions button {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: var(--ink);
+    font-weight: 500;
+    text-align: left;
+}
+.suggestions button:hover, .suggestions button:focus-visible { background: var(--line); color: var(--ink); }
+
+.suggestion-poster { width: 34px; height: 51px; object-fit: cover; border-radius: 3px; flex-shrink: 0; }
+.suggestion-title { flex: 1; }
+.suggestion-year { color: var(--muted); font-weight: 400; font-size: 0.875rem; }
+
+.picked-movie { display: flex; align-items: center; gap: 1rem; margin-top: 0.75rem; }
+.picked-movie p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+.picked-poster { width: 80px; height: 120px; object-fit: cover; border-radius: 4px; flex-shrink: 0; }
+
+.no-poster { display: inline-block; background: var(--line); }

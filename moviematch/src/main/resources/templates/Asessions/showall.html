@@ -15,28 +15,29 @@
                 <tr>
                     <th>Session</th>
                     <th>Actions</th>
-                    
+                   
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="Asession : ${Asessions}">
-                    
-                
+                   
+               
+
 
                     <td th:text="${Asession.sessionTitle}"></td>
                     <td>
-                        <<a th:href="@{/Asessions/{id}/movies/main(id=${Asession.uid})}">Go to Voting Lobby? </a>
-                        
+                        <a th:href="@{/Asessions/{id}/movies/main(id=${Asession.uid})}">Go to Voting Lobby </a>
+                       
                         <a th:href="@{/Asessions/{id}(id=${Asession.uid})}">View</a>
-                            
+                           
                         <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
-                        
+                       
                         <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
     </main>
-    
+   
 </body>
 </html>

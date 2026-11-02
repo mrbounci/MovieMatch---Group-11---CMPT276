@@ -8,4 +8,6 @@ public interface MovieRepository extends JpaRepository<MovieInformation, Long> {
     List<MovieInformation> findByMovieTitle(String movieTitle);
     List<MovieInformation> findByMovieTitleAndMovieRating(String movieTitle, long movieRating);
     List<MovieInformation> findBySession(SessionInformation session);
+    List<MovieInformation> findBySessionOrderByMovieVoteCountDesc(SessionInformation session);
+    List<MovieInformation> findBySessionOrderByMovieVoteCountDescUidAsc(SessionInformation session);
 }

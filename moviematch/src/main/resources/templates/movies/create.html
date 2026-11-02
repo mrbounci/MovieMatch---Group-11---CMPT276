@@ -2,10 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Submit a Movie</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1>Submit a Movie</h1>
         <form method="post" th:action="@{/Asessions/{Sid}/movies/add(Sid=${AsessionId})}" th:object="${movie}">
@@ -34,7 +36,7 @@
             </p>
             <button type="submit">Save movie</button>
         </form>
-        <p><a href="/Asessions/{Sid}/movies/main(Sid=${AsessionId})">View movies</a></p>
+        <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${AsessionId})}">View movies</a></p>
     </main>
 </body>
 </html>

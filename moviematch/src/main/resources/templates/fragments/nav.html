@@ -2,23 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
 <!--
-  Shared navigation bar. Include it at the top of <body> on any page with:
+  Shared top bar. Put this at the top of <body> on any page:
       <nav th:replace="~{fragments/nav :: nav}"></nav>
-  It uses ${loggedIn} and ${currentDisplayName}, which CurrentUserAdvice adds to every page.
+  ${loggedIn} and ${currentDisplayName} come from CurrentUserAdvice.
 -->
 <nav class="navbar" th:fragment="nav">
-    <a class="brand" th:href="@{/dashboard}">Movie<span>Match</span></a>
+    <a class="brand" th:href="@{/dashboard}">moviematch</a>
 
     <div class="nav-links" th:if="${loggedIn}">
-        <a th:href="@{/dashboard}">Dashboard</a>
-        <a th:href="@{/Asessions/main}">All sessions</a>
-        <a class="nav-host" th:href="@{/host}">Host dashboard</a>
+        <a th:href="@{/dashboard}">Sessions</a>
+        <a th:href="@{/host}">Hosting</a>
     </div>
 
     <div class="nav-user" th:if="${loggedIn}">
-        <span th:text="${currentDisplayName}">Display name</span>
+        <span th:text="${currentDisplayName}">Jacob</span>
         <form method="post" th:action="@{/logout}">
-            <button type="submit" class="btn-secondary btn-small">Log out</button>
+            <button type="submit">Log out</button>
         </form>
     </div>
 </nav>

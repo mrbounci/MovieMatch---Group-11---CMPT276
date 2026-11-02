@@ -3,13 +3,19 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create an account · MovieMatch</title>
+    <title>Create an account - MovieMatch</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
 </head>
-<body class="auth-page">
-    <div class="auth-card">
-        <a class="brand" th:href="@{/login}">Movie<span>Match</span></a>
-        <p class="tagline">Create an account to start voting.</p>
+<body>
+<div class="auth">
+    <div class="auth-intro">
+        <a class="brand" th:href="@{/login}">moviematch</a>
+        <h1>What are we watching tonight?</h1>
+        <p>Make an account, then start a session or join one a friend made.</p>
+    </div>
+
+    <div class="auth-form">
+        <h2>Create an account</h2>
 
         <!-- POST /user-handling is handled by controllers/userscontroller.
              Field names (username, displayname, password) must match what it reads. -->
@@ -18,12 +24,12 @@
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username"
                        autocomplete="username" required maxlength="50">
-                <small class="hint">Must be unique. You'll use it to log in.</small>
+                <small class="hint">You'll log in with this. It has to be unique.</small>
             </p>
             <p>
                 <label for="displayname">Display name</label>
                 <input type="text" id="displayname" name="displayname" required maxlength="50">
-                <small class="hint">What friends see. You can change it any time.</small>
+                <small class="hint">The name your friends see. You can change it later.</small>
             </p>
             <p>
                 <label for="password">Password</label>
@@ -32,32 +38,31 @@
                 <small class="hint">At least 10 characters.</small>
             </p>
             <p>
-                <label for="confirm_password">Confirm password</label>
+                <label for="confirm_password">Type it again</label>
                 <input type="password" id="confirm_password" name="confirm_password"
                        autocomplete="new-password" required>
             </p>
             <button type="submit" class="btn-block">Create account</button>
         </form>
 
-        <p class="switch">
-            Already have an account? <a th:href="@{/login}">Log in</a>
-        </p>
+        <p class="switch">Already have one? <a th:href="@{/login}">Log in</a></p>
     </div>
+</div>
 
-    <script>
-        // Block the form if the two passwords don't match.
-        const password = document.getElementById("password");
-        const confirmPassword = document.getElementById("confirm_password");
+<script>
+    // Don't let the form submit if the two passwords are different.
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirm_password");
 
-        function checkMatch() {
-            if (confirmPassword.value && confirmPassword.value !== password.value) {
-                confirmPassword.setCustomValidity("Passwords don't match.");
-            } else {
-                confirmPassword.setCustomValidity("");
-            }
+    function checkMatch() {
+        if (confirmPassword.value && confirmPassword.value !== password.value) {
+            confirmPassword.setCustomValidity("The passwords don't match.");
+        } else {
+            confirmPassword.setCustomValidity("");
         }
-        password.addEventListener("input", checkMatch);
-        confirmPassword.addEventListener("input", checkMatch);
-    </script>
+    }
+    password.addEventListener("input", checkMatch);
+    confirmPassword.addEventListener("input", checkMatch);
+</script>
 </body>
 </html>

@@ -3,20 +3,26 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Log in · MovieMatch</title>
+    <title>Log in - MovieMatch</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
 </head>
-<body class="auth-page">
-    <div class="auth-card">
-        <a class="brand" th:href="@{/login}">Movie<span>Match</span></a>
-        <p class="tagline">Pick a movie together, without the argument.</p>
+<body>
+<div class="auth">
+    <div class="auth-intro">
+        <a class="brand" th:href="@{/login}">moviematch</a>
+        <h1>What are we watching tonight?</h1>
+        <p>Everyone suggests a movie, everyone votes, and the group goes with the winner.</p>
+    </div>
+
+    <div class="auth-form">
+        <h2>Log in</h2>
 
         <!-- LoginController redirects to /login?error or /login?logout -->
         <div class="alert alert-error" th:if="${param.error}">
-            Incorrect username or password.
+            That username and password don't match. Try again.
         </div>
         <div class="alert alert-success" th:if="${param.logout}">
-            You've been logged out.
+            You're logged out.
         </div>
 
         <!-- POST /login is handled by auth/LoginController -->
@@ -34,9 +40,8 @@
             <button type="submit" class="btn-block">Log in</button>
         </form>
 
-        <p class="switch">
-            New to MovieMatch? <a th:href="@{/user-handling}">Create an account</a>
-        </p>
+        <p class="switch">No account yet? <a th:href="@{/user-handling}">Create one</a></p>
     </div>
+</div>
 </body>
 </html>

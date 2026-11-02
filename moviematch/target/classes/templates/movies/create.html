@@ -8,7 +8,7 @@
 <body>
     <main>
         <h1>Submit a Movie</h1>
-        <form method="post" th:action="@{/movies/add}" th:object="${movie}">
+        <form method="post" th:action="@{/Asessions/{Sid}/movies/add(Sid=${AsessionId})}" th:object="${movie}">
             <p>
                 <label for="movieTitle">Movie Title</label>
                 <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">
@@ -34,7 +34,7 @@
             </p>
             <button type="submit">Save movie</button>
         </form>
-        <p><a href="/movies/main">View movies</a></p>
+        <p><a href="/Asessions/{Sid}/movies/main(Sid=${AsessionId})">View movies</a></p>
     </main>
 </body>
 </html>

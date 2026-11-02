@@ -2,13 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
-    <title>movies</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${Asession.sessionTitle}"> </title>
+    <style>
+        table { border-collapse: collapse; }
+        th, td {
+            padding: 0.6rem 1.5rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .top-actions { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; }
+        .top-actions form { margin: 0; }
+        .votes form { display: inline; margin-left: 0.75rem; }
+        td a { margin: 0 0.5rem; }
+    </style>
 </head>
 <body>
     <main>
-        <h1>Movie Voting Screen</h1>
-        <p><a href="/movies/new">Submit a movie</a></p>
+        <h1 th:text="${Asession.sessionTitle}"> </h1>
+        <div class="top-actions">
+            <a th:href="@{/Asessions/{Sid}/movies/new(Sid=${AsessionId})}">Submit a movie</a>
+            <form method="post"
+                  th:action="@{/Asessions/{Sid}/movies/reset(Sid=${AsessionId})}"
+                  onsubmit="return confirm('Reset all votes in this session to 0?');">
+                <button type="submit">Reset votes</button>
+            </form>
+        </div>
         <p th:if="${#lists.isEmpty(movies)}">No movies have been submitted yet.</p>
         <table th:unless="${#lists.isEmpty(movies)}">
             <thead>
@@ -16,31 +35,31 @@
                     <th>Movie</th>
                     <th>Genre</th>
                     <th>Rating</th>
-                    <th>VotesNotWorking</th>
+                    <th>Votes</th>
                     <th>Actions</th>
-                    
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="movie : ${movies}">
-                    
-                
-
                     <td th:text="${movie.movieTitle}"></td>
                     <td th:text="${movie.movieGenre}"></td>
                     <td th:text="${movie.movieRating}"></td>
-                    <td th:text="${movie.movieBlurb}"></td>
+                    <td class="votes">
+                        <span th:text="${movie.movieVoteCount}"></span>
+                        <form method="post"
+                              th:action="@{/Asessions/{Sid}/movies/{id}/vote(Sid=${AsessionId},id=${movie.uid})}">
+                            <button type="submit">Vote</button>
+                        </form>
+                    </td>
                     <td>
-                        <a th:href="@{/movies/{id}(id=${movie.uid})}">View</a>
-                            
-                        <a th:href="@{/movies/{id}/edit(id=${movie.uid})}">Edit</a>
-                        
-                        <a th:href="@{/movies/{id}/delete(id=${movie.uid})}">Delete</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}(Sid=${AsessionId},id=${movie.uid})}">View</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
+                        <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <p><a th:href="@{/Asessions/main}">Back to sessions</a></p>
     </main>
-    
 </body>
 </html>

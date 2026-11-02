@@ -13,7 +13,7 @@
 
 <p th:text="${movie.movieTitle}"></p>
 
-<form th:action="@{/movies/{id}/delete(id=${movie.uid})}"
+<form th:action="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}"
       method="post">
 
     <button type="submit">
@@ -22,7 +22,7 @@
 
 </form>
 
-<a th:href="@{/movies/{id}(id=${movie.uid})}">
+<a th:href="@{/Asessions/{Sid}/movies/{id}(Sid=${AsessionId},id=${movie.uid})}">
     Cancel
 </a>
 

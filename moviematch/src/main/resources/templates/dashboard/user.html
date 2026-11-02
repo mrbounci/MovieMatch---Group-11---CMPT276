@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sessions - MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="../../static/css/style.css">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<main>
+    <!-- From PageController.userDashboard(): ${sessions} is a list of SessionCard -->
+    <div class="page-header">
+        <div>
+            <h1>Sessions</h1>
+            <p>Pick one to vote in, or start your own.</p>
+        </div>
+        <div class="actions">
+            <a class="btn" th:href="@{/Asessions/new}">New session</a>
+        </div>
+    </div>
+
+    <div class="empty" th:if="${#lists.isEmpty(sessions)}">
+        <p>Nobody has started a session yet.</p>
+        <a class="btn" th:href="@{/Asessions/new}">Start the first one</a>
+    </div>
+
+    <ul class="session-list" th:unless="${#lists.isEmpty(sessions)}">
+        <li class="session-row" th:each="card : ${sessions}">
+            <div class="session-main">
+                <h3>
+                    <span th:text="${card.session.sessionTitle}">Friday movie night</span>
+                    <span class="tag" th:if="${card.hostedByMe}">Hosting</span>
+                </h3>
+                <p class="session-blurb" th:unless="${#strings.isEmpty(card.session.sessionBlurb)}"
+                   th:text="${card.session.sessionBlurb}">Something scary but not too scary.</p>
+                <p class="session-meta">
+                    <th:block th:if="${card.movieCount == 0}">No movies suggested yet.</th:block>
+                    <th:block th:if="${card.movieCount > 0}">
+                        <span th:text="${card.movieCount == 1 ? '1 movie.' : card.movieCount + ' movies.'}">4 movies.</span>
+                        <span th:if="${card.leadingMovie != null}"
+                              th:text="${card.leadingMovie + ' is winning with ' + (card.leadingVotes == 1 ? '1 vote.' : card.leadingVotes + ' votes.')}">Alien is winning with 3 votes.</span>
+                        <span class="muted" th:if="${card.leadingMovie == null}">No votes yet.</span>
+                    </th:block>
+                </p>
+            </div>
+            <div class="session-actions">
+                <a class="btn btn-small" th:href="@{/Asessions/{id}/movies/main(id=${card.session.uid})}">Vote</a>
+                <a class="btn btn-secondary btn-small" th:href="@{/Asessions/{id}(id=${card.session.uid})}">Details</a>
+            </div>
+        </li>
+    </ul>
+</main>
+</body>
+</html>

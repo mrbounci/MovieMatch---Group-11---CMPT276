@@ -25,6 +25,10 @@ public class SessionInformation {
     @Size(max = 1000, message = "Optional: Describe the movie, or Reasons to vote")
     private String sessionBlurb;
 
+    // The user (users.uid) who created this session. They are its HOST.
+    // Null for sessions created before hosts existed.
+    private Integer hostId;
+
     public SessionInformation(){
 
     }
@@ -55,5 +59,24 @@ public class SessionInformation {
 
     public void setSessionBlurb(String sessionBlurb) {
         this.sessionBlurb = sessionBlurb;
+    }
+
+    public Integer getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(Integer hostId) {
+        this.hostId = hostId;
+    }
+
+    // True if this user is the host of the session.
+    public boolean isHostedBy(Integer userId) {
+        return hostId != null && hostId.equals(userId);
+    }
+
+    // Host-only controls (edit, delete, reset votes) are shown when this is true.
+    // Old sessions with no host stay manageable by anyone so nothing gets locked.
+    public boolean canBeManagedBy(Integer userId) {
+        return hostId == null || hostId.equals(userId);
     }
 }

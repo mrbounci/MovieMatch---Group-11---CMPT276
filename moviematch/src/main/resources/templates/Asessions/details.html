@@ -1,20 +1,28 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Session Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Session details · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1>Session details</h1>
 
-        <p>Title: <span th:text="${Asession.sessionTitle}"></span></p>
-        <p>Blurb: <span th:text="${Asession.sessionBlurb}"></span></p>
+        <div class="card">
+            <p>Title: <span th:text="${Asession.sessionTitle}"></span>
+               <span class="badge badge-host" th:if="${Asession.isHostedBy(currentUserId)}">You're the host</span></p>
+            <p>Blurb: <span th:text="${Asession.sessionBlurb}"></span></p>
 
-        <p>
-            <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
-            <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
-        </p>
-        <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${Asession.uid})}">Go to MovieVoteLobby?</a></p>
+            <!-- host-only -->
+            <p th:if="${Asession.canBeManagedBy(currentUserId)}">
+                <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
+                <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
+            </p>
+            <p><a class="btn" th:href="@{/Asessions/{Sid}/movies/main(Sid=${Asession.uid})}">Go to voting</a></p>
+        </div>
         <p><a th:href="@{/Asessions/main}">Back to sessions</a></p>
     </main>
 </body>

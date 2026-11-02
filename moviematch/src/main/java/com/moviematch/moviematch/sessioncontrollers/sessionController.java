@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
@@ -28,7 +30,8 @@ public class sessionController {
         return "Asessions/create";
     }
 
-    @GetMapping({"/", "/Asessions/main"})
+    // "/" now goes to the user dashboard (see PageController)
+    @GetMapping("/Asessions/main")
     public String showSessions(Model model) {
         model.addAttribute("Asessions", SessionRepository.findAll());
         return "Asessions/showall";
@@ -36,13 +39,19 @@ public class sessionController {
 
     @PostMapping("/Asessions/add")
     public String addSession(@Valid @ModelAttribute("Asession") SessionForm form,
-                            BindingResult bindingResult, Model model) {
+                            BindingResult bindingResult, Model model,
+                            HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             return showCreateForm(model);
         }
 
         SessionInformation session = new SessionInformation();
         form.applyTo(session);
+        // whoever creates the session becomes its host
+        HttpSession login = request.getSession(false);
+        if (login != null && login.getAttribute("userId") instanceof Number id) {
+            session.setHostId(id.intValue());
+        }
         SessionRepository.save(session);
         return "redirect:/Asessions/main";
     }
@@ -96,4 +105,4 @@ public class sessionController {
         return SessionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ASession not found"));
     }
-}
+}

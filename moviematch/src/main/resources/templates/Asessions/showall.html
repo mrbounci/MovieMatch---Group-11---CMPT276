@@ -2,42 +2,48 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
-    <title>sessions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All sessions · MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
-        <h1>Session lobby? Screen</h1>
-        <p><a href="/Asessions/new">Submit a session</a></p>
-        <p th:if="${#lists.isEmpty(Asessions)}">No sessions have been submitted yet.</p>
+        <div class="page-header">
+            <div>
+                <h1>All sessions</h1>
+                <p>Every voting session on MovieMatch.</p>
+            </div>
+            <div class="actions">
+                <a class="btn" href="/Asessions/new">+ New session</a>
+            </div>
+        </div>
+        <p class="empty" th:if="${#lists.isEmpty(Asessions)}">No sessions have been submitted yet.</p>
         <table th:unless="${#lists.isEmpty(Asessions)}">
             <thead>
                 <tr>
                     <th>Session</th>
                     <th>Actions</th>
-                   
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="Asession : ${Asessions}">
-                   
-               
-
-
-                    <td th:text="${Asession.sessionTitle}"></td>
                     <td>
-                        <a th:href="@{/Asessions/{id}/movies/main(id=${Asession.uid})}">Go to Voting Lobby </a>
-                       
+                        <span th:text="${Asession.sessionTitle}"></span>
+                        <span class="badge badge-host" th:if="${Asession.isHostedBy(currentUserId)}">Host</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/Asessions/{id}/movies/main(id=${Asession.uid})}">Go to Voting Lobby</a>
                         <a th:href="@{/Asessions/{id}(id=${Asession.uid})}">View</a>
-                           
-                        <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
-                       
-                        <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
+                        <!-- host-only -->
+                        <th:block th:if="${Asession.canBeManagedBy(currentUserId)}">
+                            <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
+                            <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
+                        </th:block>
                     </td>
                 </tr>
             </tbody>
         </table>
     </main>
-   
 </body>
 </html>

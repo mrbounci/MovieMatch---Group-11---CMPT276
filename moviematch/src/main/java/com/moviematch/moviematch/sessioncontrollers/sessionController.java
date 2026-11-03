@@ -30,11 +30,11 @@ public class sessionController {
         return "Asessions/create";
     }
 
-    // "/" now goes to the user dashboard (see PageController)
+    // the Sessions dashboard replaced the old lobby list,
+    // so old links and redirects to /Asessions/main end up there
     @GetMapping("/Asessions/main")
-    public String showSessions(Model model) {
-        model.addAttribute("Asessions", SessionRepository.findAll());
-        return "Asessions/showall";
+    public String showSessions() {
+        return "redirect:/dashboard";
     }
 
     @PostMapping("/Asessions/add")
@@ -105,4 +105,4 @@ public class sessionController {
         return SessionRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "ASession not found"));
     }
-}
+}

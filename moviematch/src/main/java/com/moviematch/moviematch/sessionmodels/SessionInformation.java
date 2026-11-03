@@ -74,9 +74,9 @@ public class SessionInformation {
         return hostId != null && hostId.equals(userId);
     }
 
-    // Host-only controls (edit, delete, reset votes) are shown when this is true.
-    // Old sessions with no host stay manageable by anyone so nothing gets locked.
+    // Only the host can edit, delete or reset votes.
+    // Old sessions made before we saved hosts have no host, so nobody can manage those.
     public boolean canBeManagedBy(Integer userId) {
-        return hostId == null || hostId.equals(userId);
+        return isHostedBy(userId);
     }
 }

@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 
+import com.moviematch.moviematch.controllers.CurrentUserAdvice;
 import com.moviematch.moviematch.moviemodels.GENRE;
 import com.moviematch.moviematch.moviemodels.MovieInformation;
 import com.moviematch.moviematch.moviemodels.MovieRepository;
@@ -81,8 +83,11 @@ public class movieController {
 
 
     @GetMapping("/Asessions/{Sid}/movies/{id}/edit")
-    public String editMovie(@PathVariable long id, @PathVariable long Sid, Model model) {
-        model.addAttribute("movie", MovieForm.from(findMovieInformation(id)));
+    public String editMovie(@PathVariable long id, @PathVariable long Sid, Model model,
+                            HttpServletRequest request) {
+        MovieInformation movie = findMovieInformation(id);
+        checkIsHost(movie.getSession(), request);
+        model.addAttribute("movie", MovieForm.from(movie));
         model.addAttribute("movieId", id);
         model.addAttribute("AsessionId", Sid);
         model.addAttribute("genres", GENRE.values());
@@ -94,8 +99,10 @@ public class movieController {
     public String updateMovie(@PathVariable long id,
                               @PathVariable long Sid,
                                @Valid @ModelAttribute("movie") MovieForm form,
-                               BindingResult bindingResult, Model model) {
+                               BindingResult bindingResult, Model model,
+                               HttpServletRequest request) {
         MovieInformation existing = findMovieInformation(id);
+        checkIsHost(existing.getSession(), request);
         if (bindingResult.hasErrors()) {
             model.addAttribute("movieId", id);
              model.addAttribute("AsessionId", Sid);
@@ -111,16 +118,21 @@ public class movieController {
 
 
     @GetMapping("/Asessions/{Sid}/movies/{id}/delete")
-    public String deletePage(@PathVariable long id, @PathVariable long Sid, Model model) {
-        model.addAttribute("movie", findMovieInformation(id));
+    public String deletePage(@PathVariable long id, @PathVariable long Sid, Model model,
+                             HttpServletRequest request) {
+        MovieInformation movie = findMovieInformation(id);
+        checkIsHost(movie.getSession(), request);
+        model.addAttribute("movie", movie);
         model.addAttribute("AsessionId", Sid);
         return "movies/delete";
     }
 
 
     @PostMapping("/Asessions/{Sid}/movies/{id}/delete")
-    public String deleteMovie(@PathVariable long id, @PathVariable long Sid) {
+    public String deleteMovie(@PathVariable long id, @PathVariable long Sid,
+                              HttpServletRequest request) {
         MovieInformation movie = findMovieInformation(id);
+        checkIsHost(movie.getSession(), request);
         MovieRepository.delete(movie);
         return "redirect:/Asessions/"+ Sid +"/movies/main";
     }
@@ -131,6 +143,15 @@ public class movieController {
         return "movies/create";
     }
 
+
+    // only the session's host can edit/delete movies or reset votes,
+    // even if someone types the URL in directly
+    private void checkIsHost(SessionInformation session, HttpServletRequest request) {
+        Integer userId = CurrentUserAdvice.currentUserId(request);
+        if (session == null || !session.canBeManagedBy(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can do that");
+        }
+    }
 
     private MovieInformation findMovieInformation(long id) {
         return MovieRepository.findById(id)
@@ -151,9 +172,10 @@ public class movieController {
     }
 
     @PostMapping("/Asessions/{Sid}/movies/reset")
-    public String resetVotes(@PathVariable long Sid) {
+    public String resetVotes(@PathVariable long Sid, HttpServletRequest request) {
         SessionInformation session = SessionRepository.findById(Sid)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found"));
+        checkIsHost(session, request);
         List<MovieInformation> movies = MovieRepository.findBySession(session);
         for (MovieInformation movie : movies) {
             movie.setMovieCount(0);

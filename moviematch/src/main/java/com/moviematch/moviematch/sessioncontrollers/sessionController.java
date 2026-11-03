@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
+import com.moviematch.moviematch.controllers.CurrentUserAdvice;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
 
@@ -48,10 +48,7 @@ public class sessionController {
         SessionInformation session = new SessionInformation();
         form.applyTo(session);
         // whoever creates the session becomes its host
-        HttpSession login = request.getSession(false);
-        if (login != null && login.getAttribute("userId") instanceof Number id) {
-            session.setHostId(id.intValue());
-        }
+        session.setHostId(CurrentUserAdvice.currentUserId(request));
         SessionRepository.save(session);
         return "redirect:/Asessions/main";
     }
@@ -63,8 +60,10 @@ public class sessionController {
     }
 
     @GetMapping("/Asessions/{id}/edit")
-    public String editSession(@PathVariable long id, Model model) {
-        model.addAttribute("Asession", SessionForm.from(findSessionInformation(id)));
+    public String editSession(@PathVariable long id, Model model, HttpServletRequest request) {
+        SessionInformation session = findSessionInformation(id);
+        checkIsHost(session, request);
+        model.addAttribute("Asession", SessionForm.from(session));
         model.addAttribute("AsessionId", id);
         return "Asessions/edit";
     }
@@ -72,8 +71,10 @@ public class sessionController {
     @PostMapping("/Asessions/{id}/update")
     public String updateSession(@PathVariable long id,
                                @Valid @ModelAttribute("Asession") SessionForm form,
-                               BindingResult bindingResult, Model model) {
+                               BindingResult bindingResult, Model model,
+                               HttpServletRequest request) {
         SessionInformation existing = findSessionInformation(id);
+        checkIsHost(existing, request);
         if (bindingResult.hasErrors()) {
             model.addAttribute("AsessionId", id);
             return "Asessions/edit";
@@ -85,16 +86,27 @@ public class sessionController {
     }
 
     @GetMapping("/Asessions/{id}/delete")
-    public String deletePage(@PathVariable long id, Model model) {
-        model.addAttribute("Asession", findSessionInformation(id));
+    public String deletePage(@PathVariable long id, Model model, HttpServletRequest request) {
+        SessionInformation session = findSessionInformation(id);
+        checkIsHost(session, request);
+        model.addAttribute("Asession", session);
         return "Asessions/delete";
     }
 
     @PostMapping("/Asessions/{id}/delete")
-    public String deleteSession(@PathVariable long id) {
+    public String deleteSession(@PathVariable long id, HttpServletRequest request) {
         SessionInformation session = findSessionInformation(id);
+        checkIsHost(session, request);
         SessionRepository.delete(session);
         return "redirect:/Asessions/main";
+    }
+
+    // stops anyone who isn't the host, even if they type the URL in directly
+    private void checkIsHost(SessionInformation session, HttpServletRequest request) {
+        Integer userId = CurrentUserAdvice.currentUserId(request);
+        if (!session.canBeManagedBy(userId)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can change this session");
+        }
     }
 
     private String showCreateForm(Model model) {

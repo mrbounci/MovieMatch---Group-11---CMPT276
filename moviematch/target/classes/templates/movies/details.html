@@ -2,21 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Movie Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1>Movie details</h1>
 
         <p>Title: <span th:text="${movie.movieTitle}"></span></p>
         <p>Genre: <span th:text="${movie.movieGenre}"></span></p>
         <p>Blurb: <span th:text="${movie.movieBlurb}"></span></p>
-        <p>Blurb: <span th:text="${movie.movieRating}"></span></p>
+        <p>Rating: <span th:text="${movie.movieRating}"></span></p>
 
-        <p>
+        <!-- only the host can edit or remove movies -->
+        <p th:if="${Asession.canBeManagedBy(currentUserId)}">
             <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
             <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
         </p>
         <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${AsessionId})}">Back to movies</a></p>
     </main>
 </body>
-</html>
+</html>

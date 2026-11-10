@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+  Shared top bar. Put this at the top of <body> on any page:
+      <nav th:replace="~{fragments/nav :: nav}"></nav>
+  ${loggedIn} and ${currentDisplayName} come from CurrentUserAdvice.
+-->
+<nav class="navbar" th:fragment="nav">
+    <a class="brand" th:href="@{/dashboard}">moviematch</a>
+
+    <div class="nav-links" th:if="${loggedIn}">
+        <a th:href="@{/dashboard}">Sessions</a>
+        <a th:href="@{/host}">Hosting</a>
+    </div>
+
+    <div class="nav-user" th:if="${loggedIn}">
+        <span th:text="${currentDisplayName}">Jacob</span>
+        <form method="post" th:action="@{/logout}">
+            <button type="submit">Log out</button>
+        </form>
+    </div>
+</nav>
+</body>
+</html>

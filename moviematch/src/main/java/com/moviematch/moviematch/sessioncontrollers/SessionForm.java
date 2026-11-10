@@ -11,7 +11,6 @@ import com.moviematch.moviematch.sessionmodels.SessionInformation;
 public class SessionForm {
     @NotBlank(message ="Title is Required")
     @Size(max = 254)
-    @Column(unique = true)
     private String sessionTitle;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

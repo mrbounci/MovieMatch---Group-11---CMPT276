@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${Asession.sessionTitle}"> </title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
     <style>
         table { border-collapse: collapse; }
         th, td {
@@ -18,14 +19,16 @@
     </style>
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1 th:text="${Asession.sessionTitle}"> </h1>
         <div class="top-actions">
-            <a th:href="@{/Asessions/{Sid}/movies/new(Sid=${AsessionId})}">Submit a movie</a>
-            <form method="post"
+            <a class="btn" th:href="@{/Asessions/{Sid}/movies/new(Sid=${AsessionId})}">Submit a movie</a>
+            <!-- host-only -->
+            <form method="post" th:if="${Asession.canBeManagedBy(currentUserId)}"
                   th:action="@{/Asessions/{Sid}/movies/reset(Sid=${AsessionId})}"
                   onsubmit="return confirm('Reset all votes in this session to 0?');">
-                <button type="submit">Reset votes</button>
+                <button type="submit" class="btn-secondary">Reset votes</button>
             </form>
         </div>
         <p th:if="${#lists.isEmpty(movies)}">No movies have been submitted yet.</p>
@@ -53,8 +56,11 @@
                     </td>
                     <td>
                         <a th:href="@{/Asessions/{Sid}/movies/{id}(Sid=${AsessionId},id=${movie.uid})}">View</a>
-                        <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
-                        <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
+                        <!-- only the host can edit or remove movies -->
+                        <th:block th:if="${Asession.canBeManagedBy(currentUserId)}">
+                            <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
+                            <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
+                        </th:block>
                     </td>
                 </tr>
             </tbody>

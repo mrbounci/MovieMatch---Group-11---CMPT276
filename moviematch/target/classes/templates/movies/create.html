@@ -2,17 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Submit a Movie</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script th:src="@{/js/movie-lookup.js}" defer></script>
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1>Submit a Movie</h1>
         <form method="post" th:action="@{/Asessions/{Sid}/movies/add(Sid=${AsessionId})}" th:object="${movie}">
+            <input type="hidden" th:field="*{tmdbMovieId}" id="tmdbMovieId">
+            <input type="hidden" th:field="*{movieYear}" id="movieYear">
             <p>
                 <label for="movieTitle">Movie Title</label>
                 <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">
+                <span id="tmdbResults" class="search-dropdown"></span>
                 <span th:if="${#fields.hasErrors('movieTitle')}" th:errors="*{movieTitle}"></span>
+                <input type="hidden" th:field="*{moviePosterUrl}" />
             </p>
             <p>
                 <label for="movieGenre">Movie Genre</label>
@@ -34,7 +41,7 @@
             </p>
             <button type="submit">Save movie</button>
         </form>
-        <p><a href="/Asessions/{Sid}/movies/main(Sid=${AsessionId})">View movies</a></p>
+        <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${AsessionId})}">View movies</a></p>
     </main>
 </body>
 </html>

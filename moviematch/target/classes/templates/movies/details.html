@@ -2,17 +2,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Movie Details</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
-        <h1>Movie details</h1>
+        <h1>Movie Details</h1>
 
-        <p>Title: <span th:text="${movie.movieTitle}"></span></p>
-        <p>Genre: <span th:text="${movie.movieGenre}"></span></p>
-        <p>Blurb: <span th:text="${movie.movieBlurb}"></span></p>
-        <p>Blurb: <span th:text="${movie.movieRating}"></span></p>
+    <div class="movie-poster-container" style="margin-bottom: 20px;">
+        <img th:if="${!#strings.isEmpty(movie.moviePosterUrl)}"
+            th:src="${movie.moviePosterUrl}"
+            alt="Movie Poster"
+            style="max-width: 185px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+    </div>
 
-        <p>
+
+        <p><b>Title: </b><span th:text="${movie.movieTitle}"></span></p>
+        <p><b>Year: </b><span th:text="${movie.movieYear}"></span></p>
+        <p><b>Genre: </b><span th:text="${movie.movieGenre}"></span></p>
+        <p><b>Blurb: </b><span th:text="${movie.movieBlurb}"></span></p>
+        <p><b>Rating: </b><span th:text="${movie.movieRating}"></span></p>
+
+        <!-- only the host can edit or remove movies -->
+        <p th:if="${Asession.canBeManagedBy(currentUserId)}">
             <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
             <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
         </p>

@@ -2,15 +2,20 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <meta movieTitle="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Edit Movie</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
     <main>
         <h1>Edit movie Submission</h1>
         <form method="post"
               th:action="@{/Asessions/{Sid}/movies/{id}/update(Sid=${AsessionId},id=${movieId})}"
               th:object="${movie}">
+
+              <input type="hidden" th:field="*{moviePosterUrl}" id="moviePosterUrl">
+              <input type="hidden" th:field="*{movieYear}" id="movieYear">
             <p>
                 <label for="movieTitle">movieTitle</label>
                 <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">

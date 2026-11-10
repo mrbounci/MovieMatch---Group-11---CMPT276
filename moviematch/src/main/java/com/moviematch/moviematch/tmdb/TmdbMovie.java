@@ -38,10 +38,10 @@ public class TmdbMovie {
         }
 
         // poster_path is just the end of the link, like "/abc123.jpg"
-        // w185 means the image is 185 pixels wide
+        // w500 means the image is 500 pixels wide
         String posterPath = (String) json.get("poster_path");
         if (posterPath != null) {
-            movie.posterUrl = "https://image.tmdb.org/t/p/w185" + posterPath;
+            movie.posterUrl = "https://image.tmdb.org/t/p/w500" + posterPath;
         }
 
         // TMDB gives a list of genre numbers, like [27, 878]

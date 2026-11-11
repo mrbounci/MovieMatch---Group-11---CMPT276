@@ -8,6 +8,9 @@
 (function () {
     const titleInput = document.getElementById("movieTitle");
     const genreSelect = document.getElementById("movieGenre");
+    const tmdbIdInput = document.getElementById("tmdbMovieId");
+    const posterUrlInput = document.getElementById("moviePosterUrl");
+    const yearInput = document.getElementById("movieYear");
     if (!titleInput) {
         return;
     }
@@ -34,6 +37,9 @@
     titleInput.addEventListener("input", function () {
         clearTimeout(timer);
         picked.hidden = true;
+        if (tmdbIdInput) { tmdbIdInput.value = ""; }
+        if (yearInput) { yearInput.value = ""; }
+        if (posterUrlInput) { posterUrlInput.value = ""; }
         const text = titleInput.value.trim();
         if (text.length < 2) {
             hideList();
@@ -95,6 +101,12 @@
 
     function choose(movie) {
         titleInput.value = movie.title;
+        if (tmdbIdInput) { tmdbIdInput.value = movie.id; }
+
+        if (yearInput) { yearInput.value = movie.year || ""; }
+        
+        if (tmdbIdInput) { tmdbIdInput.value = movie.id; }
+        if (posterUrlInput) { posterUrlInput.value = movie.posterUrl || ""; }
 
         let genreText = "Pick a genre below, we couldn't match this one.";
         if (movie.genre && genreSelect) {

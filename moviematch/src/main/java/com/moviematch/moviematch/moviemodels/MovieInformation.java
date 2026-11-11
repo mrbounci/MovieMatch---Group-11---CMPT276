@@ -3,14 +3,12 @@ package com.moviematch.moviematch.moviemodels;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 
 import jakarta.persistence.*;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.time.LocalDate;
+
 
 
 
@@ -28,6 +26,8 @@ public class MovieInformation {
     @Size(max = 1000, message = "Optional: Describe the movie, or Reasons to vote")
     private String movieBlurb;
 
+    @Column(name = "movie_year", length = 4)
+    private String movieYear;
 
     @Min(1)
     @Max(10)
@@ -44,6 +44,7 @@ public class MovieInformation {
     @JoinColumn(name = "session_id")
     private SessionInformation session;
 
+    private String moviePosterUrl; 
 
     
     public MovieInformation(){
@@ -115,5 +116,32 @@ public class MovieInformation {
 
     public void setSession(SessionInformation session) {
         this.session = session;
+    }
+
+    @Column(name = "tmdb_movie_id")
+    private Long tmdbMovieId;
+
+    public Long getTmdbMovieId() {
+        return tmdbMovieId;
+    }
+
+    public void setTmdbMovieId(Long tmdbMovieId) {
+        this.tmdbMovieId = tmdbMovieId;
+    }
+
+    public String getMoviePosterUrl() {
+        return this.moviePosterUrl;
+    }
+
+    public void setMoviePosterUrl(String moviePosterUrl) {
+        this.moviePosterUrl = moviePosterUrl;
+    }
+
+    public String getMovieYear() {
+        return this.movieYear;
+    }
+
+    public void setMovieYear(String movieYear) {
+        this.movieYear = movieYear;
     }
 }

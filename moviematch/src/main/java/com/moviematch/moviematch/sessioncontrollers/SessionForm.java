@@ -11,11 +11,11 @@ import com.moviematch.moviematch.sessionmodels.SessionInformation;
 public class SessionForm {
     @NotBlank(message ="Title is Required")
     @Size(max = 254)
+    @Column(unique = true)
     private String sessionTitle;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
-    
 
     @Size(max = 1000, message = "Optional: Describe the session")
     private String sessionBlurb;

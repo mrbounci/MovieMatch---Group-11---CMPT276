@@ -21,16 +21,20 @@ import com.moviematch.moviematch.moviemodels.MovieRepository;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 import java.util.List;
+import java.util.Map;
+
+import com.moviematch.moviematch.tmdb.TmdbClient;
 
 @Controller
 public class movieController {
     private final MovieRepository MovieRepository;
     private final SessionRepository SessionRepository;
+    private final TmdbClient TmdbClient;
 
-
-    public movieController(MovieRepository MovieRepository, SessionRepository SessionRepository) {
+    public movieController(MovieRepository MovieRepository, SessionRepository SessionRepository, TmdbClient TmdbClient) {
         this.MovieRepository = MovieRepository;
         this.SessionRepository = SessionRepository;
+        this.TmdbClient = TmdbClient;
     }
    
     @GetMapping("/Asessions/{Sid}/movies/new")
@@ -62,8 +66,20 @@ public class movieController {
             return showCreateForm(model);
         }
 
-
         MovieInformation movie = new MovieInformation();
+
+        if (form.getTmdbMovieId() != null && TmdbClient.isConfigured()) {
+            try {
+                Map<String, String> crew = TmdbClient.crew(form.getTmdbMovieId());
+                movie.setMovieDirector(crew.get("director"));
+                movie.setMovieWriter(crew.get("writer"));
+                movie.setMovieComposer(crew.get("composer"));
+                movie.setMovieCinematographer(crew.get("cinematographer"));
+            } catch (RuntimeException e) {
+                System.out.println("TMDB look up failed");
+            }
+        }
+
         form.applyTo(movie);
         SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
         movie.setSession(session);

@@ -29,6 +29,21 @@ public class MovieInformation {
     @Column(name = "movie_year", length = 4)
     private String movieYear;
 
+    @Column(name = "movie_synopsis", length = 5000)
+    private String movieSynopsis;
+
+    @Column(name = "movie_director", length = 100)
+    private String movieDirector;
+
+    @Column(name = "movie_writer", length = 100)
+    private String movieWriter;
+
+    @Column(name = "movie_composer", length = 100)
+    private String movieComposer;
+
+    @Column(name = "movie_cinematographer", length = 100)
+    private String movieCinematographer;
+
     @Min(1)
     @Max(10)
     private int movieRating;
@@ -143,5 +158,45 @@ public class MovieInformation {
 
     public void setMovieYear(String movieYear) {
         this.movieYear = movieYear;
+    }
+
+    public String getMovieSynopsis() {
+        return this.movieSynopsis;
+    }
+
+    public void setMovieSynopsis(String movieSynopsis) {
+        this.movieSynopsis = movieSynopsis;
+    }
+
+    public String getMovieDirector() {
+        return this.movieDirector;
+    }
+
+    public void setMovieDirector(String movieDirector) {
+        this.movieDirector = movieDirector;
+    }
+
+    public String getMovieWriter() {
+        return this.movieWriter;
+    }
+
+    public void setMovieWriter(String movieWriter) {
+        this.movieWriter = movieWriter;
+    }
+
+    public String getMovieComposer() {
+        return this.movieComposer;
+    }
+
+    public void setMovieComposer(String movieComposer) {
+        this.movieComposer = movieComposer;
+    }
+
+    public String getMovieCinematographer() {
+        return this.movieCinematographer;
+    }
+
+    public void setMovieCinematographer(String movieCinematographer) {
+        this.movieCinematographer = movieCinematographer;
     }
 }

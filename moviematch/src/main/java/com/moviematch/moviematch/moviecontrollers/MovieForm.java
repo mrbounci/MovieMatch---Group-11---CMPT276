@@ -50,6 +50,8 @@ public class MovieForm {
 
     private String movieYear;
 
+    private String movieSynopsis;
+
     public static MovieForm from(MovieInformation movie) {
         MovieForm form = new MovieForm();
         form.setMovieTitle(movie.getMovieTitle());
@@ -60,6 +62,7 @@ public class MovieForm {
         form.setTmdbMovieId(movie.getTmdbMovieId());
         form.setMoviePosterUrl(movie.getMoviePosterUrl()); 
         form.setMovieYear(movie.getMovieYear());
+        form.setMovieSynopsis(movie.getMovieSynopsis());
         return form;
     }
 
@@ -72,6 +75,7 @@ public class MovieForm {
         movie.setTmdbMovieId(tmdbMovieId);
         movie.setMoviePosterUrl(moviePosterUrl);
         movie.setMovieYear(movieYear);
+        movie.setMovieSynopsis(movieSynopsis);
     }
    
     public long getUid() {
@@ -154,6 +158,14 @@ public class MovieForm {
 
     public void setMovieYear(String movieYear) {
         this.movieYear = movieYear;
+    }
+
+    public String getMovieSynopsis() {
+        return this.movieSynopsis;
+    }
+
+    public void setMovieSynopsis(String movieSynopsis) {
+        this.movieSynopsis = movieSynopsis;
     }
 }
 

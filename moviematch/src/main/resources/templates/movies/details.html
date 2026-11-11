@@ -20,8 +20,14 @@
         <p><b>Title: </b><span th:text="${movie.movieTitle}"></span></p>
         <p><b>Year: </b><span th:text="${movie.movieYear}"></span></p>
         <p><b>Genre: </b><span th:text="${movie.movieGenre}"></span></p>
-        <p><b>Blurb: </b><span th:text="${movie.movieBlurb}"></span></p>
         <p><b>Rating: </b><span th:text="${movie.movieRating}"></span></p>
+        <p><b>Synopsis: </b><span th:text="${movie.movieSynopsis}"></span></p>
+        <p><b>Blurb: </b><span th:text="${movie.movieBlurb}"></span></p>
+        <p><b>Director: </b><span th:text="${movie.movieDirector}"></span></p>
+        <p><b>Writer: </b><span th:text="${movie.movieWriter}"></span></p>
+        <p><b>Composer: </b><span th:text="${movie.movieComposer}"></span></p>
+        <p><b>Cinematographer: </b><span th:text="${movie.movieCinematographer}"></span></p>
+
 
         <!-- only the host can edit or remove movies -->
         <p th:if="${Asession.canBeManagedBy(currentUserId)}">

@@ -13,6 +13,7 @@ public class TmdbMovie {
     private String title;
     private String year;
     private String posterUrl;
+    private String synopsis;
     private GENRE genre; // stays null if none of TMDB's genres match ours
 
     // Takes one movie from TMDB's search results and copies out the parts we need
@@ -27,6 +28,12 @@ public class TmdbMovie {
             movie.title = json.get("title").toString();
         } else {
             movie.title = "";
+        }
+
+        if (json.get("overview") != null) {
+            movie.synopsis = json.get("overview").toString();
+        } else {
+            movie.synopsis = "";
         }
 
         // release_date looks like "1979-05-25" so we just take the first 4 characters
@@ -115,5 +122,9 @@ public class TmdbMovie {
 
     public GENRE getGenre() {
         return genre;
+    }
+
+    public String getSynopsis() {
+        return synopsis;
     }
 }

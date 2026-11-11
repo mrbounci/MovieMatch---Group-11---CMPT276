@@ -2,8 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Delete submission</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+<main>
 
 <h1>Delete Submission?</h1>
 
@@ -16,7 +19,7 @@
 <form th:action="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}"
       method="post">
 
-    <button type="submit">
+    <button type="submit" class="btn-danger">
         Delete
     </button>
 
@@ -26,5 +29,6 @@
     Cancel
 </a>
 
+</main>
 </body>
 </html>

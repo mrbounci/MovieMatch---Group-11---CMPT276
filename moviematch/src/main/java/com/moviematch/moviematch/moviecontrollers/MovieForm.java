@@ -28,7 +28,6 @@ public class MovieForm {
     private GENRE movieGenre;
    
 
-
     @Size(max = 1000, message = "Optional: Describe the movie, or Reasons to vote")
     private String movieBlurb;
 
@@ -45,6 +44,11 @@ public class MovieForm {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long uid;
 
+    private Long tmdbMovieId;
+
+    private String moviePosterUrl; 
+
+    private String movieYear;
 
     public static MovieForm from(MovieInformation movie) {
         MovieForm form = new MovieForm();
@@ -53,6 +57,9 @@ public class MovieForm {
         form.setMovieBlurb(movie.getMovieBlurb());
         form.setMovieRating(movie.getMovieRating());
         form.setMovieCount(movie.getMovieVoteCount());
+        form.setTmdbMovieId(movie.getTmdbMovieId());
+        form.setMoviePosterUrl(movie.getMoviePosterUrl()); 
+        form.setMovieYear(movie.getMovieYear());
         return form;
     }
 
@@ -62,6 +69,9 @@ public class MovieForm {
         movie.setMovieGenre(movieGenre);
         movie.setMovieBlurb(movieBlurb);
         movie.setMovieRating(movieRating);
+        movie.setTmdbMovieId(tmdbMovieId);
+        movie.setMoviePosterUrl(moviePosterUrl);
+        movie.setMovieYear(movieYear);
     }
    
     public long getUid() {
@@ -118,9 +128,32 @@ public class MovieForm {
         return movieGenre;
     }
 
-
     public void setMovieGenre(GENRE genre) {
         this.movieGenre = genre;
+    }
+
+    public Long getTmdbMovieId() {
+        return tmdbMovieId;
+    }
+
+    public void setTmdbMovieId(Long tmdbMovieId) {
+        this.tmdbMovieId = tmdbMovieId;
+    }
+
+    public String getMoviePosterUrl() {
+        return this.moviePosterUrl;
+    }
+
+    public void setMoviePosterUrl(String moviePosterUrl) {
+        this.moviePosterUrl = moviePosterUrl;
+    }
+
+    public String getMovieYear() {
+        return this.movieYear;
+    }
+
+    public void setMovieYear(String movieYear) {
+        this.movieYear = movieYear;
     }
 }
 

@@ -12,10 +12,14 @@
     <main>
         <h1>Submit a Movie</h1>
         <form method="post" th:action="@{/Asessions/{Sid}/movies/add(Sid=${AsessionId})}" th:object="${movie}">
+            <input type="hidden" th:field="*{tmdbMovieId}" id="tmdbMovieId">
+            <input type="hidden" th:field="*{movieYear}" id="movieYear">
             <p>
                 <label for="movieTitle">Movie Title</label>
                 <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">
+                <span id="tmdbResults" class="search-dropdown"></span>
                 <span th:if="${#fields.hasErrors('movieTitle')}" th:errors="*{movieTitle}"></span>
+                <input type="hidden" th:field="*{moviePosterUrl}" />
             </p>
             <p>
                 <label for="movieGenre">Movie Genre</label>

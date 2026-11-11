@@ -15,18 +15,22 @@ import jakarta.validation.Valid;
 import com.moviematch.moviematch.controllers.CurrentUserAdvice;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
+import com.moviematch.moviematch.tmdb.TmdbClient;
 
 @Controller
 public class sessionController {
+    private final TmdbClient tmdbClient;
     private final SessionRepository SessionRepository;
 
-    public sessionController(SessionRepository SessionRepository) {
+    public sessionController(SessionRepository SessionRepository, TmdbClient tmdbClient) {
         this.SessionRepository = SessionRepository;
+        this.tmdbClient = tmdbClient;
     }
 
     @GetMapping("/Asessions/new")
     public String newSession(Model model) {
         model.addAttribute("Asession", new SessionForm());
+        model.addAttribute("tmdbConfigured", tmdbClient.isConfigured());
         return "Asessions/create";
     }
 
@@ -65,6 +69,7 @@ public class sessionController {
         checkIsHost(session, request);
         model.addAttribute("Asession", SessionForm.from(session));
         model.addAttribute("AsessionId", id);
+        model.addAttribute("tmdbConfigured", tmdbClient.isConfigured());
         return "Asessions/edit";
     }
 
@@ -77,6 +82,7 @@ public class sessionController {
         checkIsHost(existing, request);
         if (bindingResult.hasErrors()) {
             model.addAttribute("AsessionId", id);
+            model.addAttribute("tmdbConfigured", tmdbClient.isConfigured());
             return "Asessions/edit";
         }
 

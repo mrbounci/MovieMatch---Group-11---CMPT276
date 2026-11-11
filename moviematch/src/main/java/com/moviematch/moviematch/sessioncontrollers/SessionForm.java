@@ -16,7 +16,6 @@ public class SessionForm {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
-    
 
     @Size(max = 1000, message = "Optional: Describe the session")
     private String sessionBlurb;

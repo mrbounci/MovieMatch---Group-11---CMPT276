@@ -20,7 +20,6 @@ import com.moviematch.moviematch.moviemodels.MovieInformation;
 public class MovieForm {
     @NotBlank(message ="Title is Required")
     @Size(max = 254)
-    @Column(unique = true)
     private String movieTitle;
 
 

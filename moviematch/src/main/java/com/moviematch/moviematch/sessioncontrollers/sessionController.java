@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -15,15 +16,18 @@ import jakarta.validation.Valid;
 import com.moviematch.moviematch.controllers.CurrentUserAdvice;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
+import com.moviematch.moviematch.moviemodels.MovieRepository;
 import com.moviematch.moviematch.tmdb.TmdbClient;
 
 @Controller
 public class sessionController {
+    private final MovieRepository MovieRepository;
     private final TmdbClient tmdbClient;
     private final SessionRepository SessionRepository;
 
-    public sessionController(SessionRepository SessionRepository, TmdbClient tmdbClient) {
+    public sessionController(SessionRepository SessionRepository, MovieRepository MovieRepository, TmdbClient tmdbClient) {
         this.SessionRepository = SessionRepository;
+        this.MovieRepository = MovieRepository;
         this.tmdbClient = tmdbClient;
     }
 
@@ -100,9 +104,11 @@ public class sessionController {
     }
 
     @PostMapping("/Asessions/{id}/delete")
+    @Transactional
     public String deleteSession(@PathVariable long id, HttpServletRequest request) {
         SessionInformation session = findSessionInformation(id);
         checkIsHost(session, request);
+        MovieRepository.deleteBySessionUid(session.getUid());
         SessionRepository.delete(session);
         return "redirect:/Asessions/main";
     }

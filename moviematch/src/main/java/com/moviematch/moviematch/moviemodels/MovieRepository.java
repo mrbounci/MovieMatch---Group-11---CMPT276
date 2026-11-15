@@ -10,4 +10,5 @@ public interface MovieRepository extends JpaRepository<MovieInformation, Long> {
     List<MovieInformation> findBySession(SessionInformation session);
     List<MovieInformation> findBySessionOrderByMovieVoteCountDesc(SessionInformation session);
     List<MovieInformation> findBySessionOrderByMovieVoteCountDescUidAsc(SessionInformation session);
+    List<MovieInformation> deleteBySessionUid(long Uid);
 }

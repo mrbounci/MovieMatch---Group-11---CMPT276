@@ -44,6 +44,9 @@ public class MovieInformation {
     @Column(name = "movie_cinematographer", length = 100)
     private String movieCinematographer;
 
+    @Column(name = "movie_cast", length = 500)
+    private String movieCast;
+
     @Min(1)
     @Max(10)
     private int movieRating;
@@ -51,7 +54,6 @@ public class MovieInformation {
     @NotNull
     @Enumerated(EnumType.STRING)
     private GENRE movieGenre;
-
 
     private int movieVoteCount;
 
@@ -61,7 +63,6 @@ public class MovieInformation {
 
     private String moviePosterUrl; 
 
-    
     public MovieInformation(){
 
     }
@@ -198,5 +199,13 @@ public class MovieInformation {
 
     public void setMovieCinematographer(String movieCinematographer) {
         this.movieCinematographer = movieCinematographer;
+    }
+
+    public String getMovieCast() {
+        return this.movieCast;
+    }
+
+    public void setMovieCast(String movieCast) {
+        this.movieCast = movieCast;
     }
 }

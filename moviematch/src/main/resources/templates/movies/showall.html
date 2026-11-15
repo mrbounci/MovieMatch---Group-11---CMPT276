@@ -45,6 +45,7 @@
             <tbody>
                 <tr th:each="movie : ${movies}">
                     <td th:text="${movie.movieTitle}"></td>
+                    <!-- movie.moviePosterUrl -->
                     <td th:text="${movie.movieGenre}"></td>
                     <td th:text="${movie.movieRating}"></td>
                     <td class="votes">

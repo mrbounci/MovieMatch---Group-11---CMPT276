@@ -75,6 +75,7 @@ public class movieController {
                 movie.setMovieWriter(crew.get("writer"));
                 movie.setMovieComposer(crew.get("composer"));
                 movie.setMovieCinematographer(crew.get("cinematographer"));
+                movie.setMovieCast(crew.get("cast"));
             } catch (RuntimeException e) {
                 System.out.println("TMDB look up failed");
             }

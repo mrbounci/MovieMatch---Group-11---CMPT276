@@ -14,6 +14,7 @@
         <form method="post" th:action="@{/Asessions/{Sid}/movies/add(Sid=${AsessionId})}" th:object="${movie}">
             <input type="hidden" th:field="*{tmdbMovieId}" id="tmdbMovieId">
             <input type="hidden" th:field="*{movieYear}" id="movieYear">
+            <input type="hidden" th:field="*{movieSynopsis}" id="movieSynopsis">
             <p>
                 <label for="movieTitle">Movie Title</label>
                 <input id="movieTitle" type="text" th:field="*{movieTitle}" required maxlength="100">

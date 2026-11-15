@@ -1,8 +1,11 @@
 package com.moviematch.moviematch.tmdb;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
@@ -63,4 +66,49 @@ public class TmdbClient {
         }
         return movies;
     }
+
+    @SuppressWarnings("unchecked")
+    public Map<String, String> crew(long tmdbId) {
+        Map<String, Object> body = http.get()
+        .uri(uri -> uri.path("/movie/{id}/credits")
+                .queryParam("language", "en-US")
+                .build(tmdbId))
+            .retrieve()
+            .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+        Map<String, Set<String>> found = new LinkedHashMap<>();
+        if (body != null && body.get("crew") instanceof List<?> crew) {
+            for (Object item : crew) {
+            if (item instanceof Map<?, ?> person && person.get("name") != null) {
+                String role = roleFor(String.valueOf(person.get("job")));
+                if (role != null) {
+                        found.computeIfAbsent(role, k -> new LinkedHashSet<>())
+                            .add(person.get("name").toString());
+                    }
+                }
+            }
+        }
+
+        Map<String, String> result = new LinkedHashMap<>();
+        for (Map.Entry<String, Set<String>> entry : found.entrySet()) {
+            result.put(entry.getKey(), String.join(", ", entry.getValue()));
+        }
+        return result;
+    }
+
+    private static String roleFor(String job) {
+    switch (job) {
+        case "Director":
+            return "director";
+        case "Screenplay":
+        case "Writer":
+            return "writer";
+        case "Original Music Composer":
+            return "composer";
+        case "Director of Photography":
+            return "cinematographer";
+        default:
+            return null;
+    }
+}
 }

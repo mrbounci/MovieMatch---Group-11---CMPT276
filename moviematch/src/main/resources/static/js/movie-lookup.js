@@ -9,6 +9,7 @@
     const titleInput = document.getElementById("movieTitle");
     const genreSelect = document.getElementById("movieGenre");
     const tmdbIdInput = document.getElementById("tmdbMovieId");
+    const synopsis = document.getElementById("movieSynopsis");
     const posterUrlInput = document.getElementById("moviePosterUrl");
     const yearInput = document.getElementById("movieYear");
     if (!titleInput) {
@@ -104,6 +105,8 @@
         if (tmdbIdInput) { tmdbIdInput.value = movie.id; }
 
         if (yearInput) { yearInput.value = movie.year || ""; }
+
+        if (synopsis) {synopsis.value = movie.synopsis; }
         
         if (tmdbIdInput) { tmdbIdInput.value = movie.id; }
         if (posterUrlInput) { posterUrlInput.value = movie.posterUrl || ""; }

@@ -93,22 +93,36 @@ public class TmdbClient {
         for (Map.Entry<String, Set<String>> entry : found.entrySet()) {
             result.put(entry.getKey(), String.join(", ", entry.getValue()));
         }
+
+        if (body != null && body.get("cast") instanceof List<?> actors) {
+            List<String> actorsList = new ArrayList<>();
+            for (Object item : actors) {
+                if (actorsList.size() == 5) {
+                    break;
+                }
+                if (item instanceof Map<?, ?> person && person.get("name") != null) {
+                    actorsList.add(person.get("name").toString());
+                }
+                result.put("cast", String.join(", ", actorsList));
+            }
+        }
+
         return result;
     }
 
-    private static String roleFor(String job) {
-    switch (job) {
-        case "Director":
-            return "director";
-        case "Screenplay":
-        case "Writer":
-            return "writer";
-        case "Original Music Composer":
-            return "composer";
-        case "Director of Photography":
-            return "cinematographer";
-        default:
-            return null;
+        private static String roleFor(String job) {
+        switch (job) {
+            case "Director":
+                return "director";
+            case "Screenplay":
+            case "Writer":
+                return "writer";
+            case "Original Music Composer":
+                return "composer";
+            case "Director of Photography":
+                return "cinematographer";
+            default:
+                return null;
+        }
     }
-}
 }

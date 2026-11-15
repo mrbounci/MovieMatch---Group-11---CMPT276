@@ -5,6 +5,7 @@ com\moviematch\moviematch\MoviematchApplication.class
 com\moviematch\moviematch\auth\LoginUserRepository.class
 com\moviematch\moviematch\models\users.class
 com\moviematch\moviematch\moviemodels\GENRE.class
+com\moviematch\moviematch\tmdb\TmdbClient$2.class
 com\moviematch\moviematch\sessioncontrollers\sessionController.class
 com\moviematch\moviematch\moviemodels\GENREDisplayTitleOveride\GNRomance.class
 com\moviematch\moviematch\moviecontrollers\movieController.class

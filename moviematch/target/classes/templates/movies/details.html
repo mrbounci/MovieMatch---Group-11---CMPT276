@@ -24,6 +24,7 @@
         <p><b>Synopsis: </b><span th:text="${movie.movieSynopsis}"></span></p>
         <p><b>Blurb: </b><span th:text="${movie.movieBlurb}"></span></p>
         <p><b>Director: </b><span th:text="${movie.movieDirector}"></span></p>
+        <p th:if="${!#strings.isEmpty(movie.movieCast)}"><b>Cast: </b><span th:text="${movie.movieCast}"></span></p>
         <p><b>Writer: </b><span th:text="${movie.movieWriter}"></span></p>
         <p><b>Composer: </b><span th:text="${movie.movieComposer}"></span></p>
         <p><b>Cinematographer: </b><span th:text="${movie.movieCinematographer}"></span></p>

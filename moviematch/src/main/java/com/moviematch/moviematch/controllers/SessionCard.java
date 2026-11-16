@@ -1,5 +1,8 @@
 package com.moviematch.moviematch.controllers;
 
+import java.util.List;
+
+import com.moviematch.moviematch.moviemodels.MovieInformation;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 
 /**
@@ -12,14 +15,17 @@ public class SessionCard {
     private final String leadingMovie;   // movie with the most votes, or null
     private final int leadingVotes;
     private final boolean hostedByMe;
+    private final List<MovieInformation> movies;   // every movie in the session, most votes first
 
     public SessionCard(SessionInformation session, int movieCount,
-                       String leadingMovie, int leadingVotes, boolean hostedByMe) {
+                       String leadingMovie, int leadingVotes, boolean hostedByMe,
+                       List<MovieInformation> movies) {
         this.session = session;
         this.movieCount = movieCount;
         this.leadingMovie = leadingMovie;
         this.leadingVotes = leadingVotes;
         this.hostedByMe = hostedByMe;
+        this.movies = movies;
     }
 
     public SessionInformation getSession() {
@@ -40,5 +46,9 @@ public class SessionCard {
 
     public boolean isHostedByMe() {
         return hostedByMe;
+    }
+
+    public List<MovieInformation> getMovies() {
+        return movies;
     }
 }

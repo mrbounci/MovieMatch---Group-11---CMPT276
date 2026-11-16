@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
  * model, so any Thymeleaf template can use:
  *   ${loggedIn}            true / false
  *   ${currentUserId}       the user's uid (Integer), or null
+ *   ${currentPath}         the current URL path, e.g. /dashboard
  *   ${currentDisplayName}  the user's display name, or null
  *
  * This is what makes role-based views possible without changing every controller.
@@ -42,6 +43,8 @@ public class CurrentUserAdvice {
         model.addAttribute("loggedIn", userId != null);
         model.addAttribute("currentUserId", userId);
         model.addAttribute("currentDisplayName", displayName);
+        // the nav uses this to highlight the tab for the page you are on
+        model.addAttribute("currentPath", request.getRequestURI());
     }
 
     /** The logged-in user's uid, or null if nobody is logged in. */

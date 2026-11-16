@@ -11,11 +11,13 @@ import com.moviematch.moviematch.moviemodels.MovieInformation;
 import com.moviematch.moviematch.moviemodels.MovieRepository;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
+import com.moviematch.moviematch.tmdb.TmdbClient;
+import com.moviematch.moviematch.tmdb.TmdbMovie;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * Pages owned by the UI: login page, user dashboard, host dashboard.
+ * Pages owned by the UI: login page, home page, user dashboard, host dashboard.
  * (POST /login and POST /logout are handled by auth/LoginController.)
  */
 @Controller
@@ -23,17 +25,51 @@ public class PageController {
 
     private final SessionRepository sessionRepo;
     private final MovieRepository movieRepo;
+    private final TmdbClient tmdb;
 
-    public PageController(SessionRepository sessionRepo, MovieRepository movieRepo) {
+    public PageController(SessionRepository sessionRepo, MovieRepository movieRepo, TmdbClient tmdb) {
         this.sessionRepo = sessionRepo;
         this.movieRepo = movieRepo;
+        this.tmdb = tmdb;
     }
 
-    // Home page: logged-in users go to their dashboard.
-    // (LoginRequiredInterceptor already sends logged-out users to /login.)
     @GetMapping("/")
-    public String home() {
-        return "redirect:/dashboard";
+    public String root() {
+        return "redirect:/home";
+    }
+
+    // Home page: a short guide to the site, the user's own numbers,
+    // and a row of movies that are popular on TMDB right now.
+    @GetMapping("/home")
+    public String home(HttpServletRequest request, Model model) {
+        Integer userId = CurrentUserAdvice.currentUserId(request);
+        if (userId == null) {
+            return "redirect:/login";
+        }
+
+        int sessionCount = 0;
+        int hostingCount = 0;
+        for (SessionInformation session : sessionRepo.findAll()) {
+            sessionCount++;
+            if (session.isHostedBy(userId)) {
+                hostingCount++;
+            }
+        }
+
+        // If TMDB is not set up or is down, the home page still works, just without this row.
+        List<TmdbMovie> popular = new ArrayList<>();
+        if (tmdb.isConfigured()) {
+            try {
+                popular = tmdb.popular();
+            } catch (Exception e) {
+                popular = new ArrayList<>();
+            }
+        }
+
+        model.addAttribute("sessionCount", sessionCount);
+        model.addAttribute("hostingCount", hostingCount);
+        model.addAttribute("popular", popular);
+        return "home";
     }
 
     // The login form. It POSTs to /login, which LoginController handles.
@@ -41,7 +77,7 @@ public class PageController {
     @GetMapping("/login")
     public String loginPage(HttpServletRequest request) {
         if (CurrentUserAdvice.currentUserId(request) != null) {
-            return "redirect:/dashboard";
+            return "redirect:/home";
         }
         return "auth/login";
     }
@@ -104,6 +140,6 @@ public class PageController {
         }
 
         return new SessionCard(session, movies.size(), leadingMovie, leadingVotes,
-                session.isHostedBy(userId));
+                session.isHostedBy(userId), movies);
     }
 }

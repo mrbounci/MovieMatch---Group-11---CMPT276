@@ -41,6 +41,7 @@
                         <span class="muted" th:if="${card.leadingMovie == null}">No votes yet.</span>
                     </th:block>
                 </p>
+                <div th:replace="~{fragments/movie-preview :: preview(${card})}"></div>
             </div>
             <!-- host-only controls -->
             <div class="session-actions">

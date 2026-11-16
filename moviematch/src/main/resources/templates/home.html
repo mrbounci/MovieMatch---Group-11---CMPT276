@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home - MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<main>
+    <!-- From PageController.home(): ${sessionCount}, ${hostingCount}, ${popular} (list of TmdbMovie) -->
+    <section class="home-hero">
+        <h1>Hi <span th:text="${currentDisplayName}">Jacob</span>, what are we watching?</h1>
+        <p>Start a session, get everyone to suggest a movie, then vote. The winner is what you watch.</p>
+        <div class="home-actions">
+            <a class="btn" th:href="@{/Asessions/new}">Start a session</a>
+            <a class="btn btn-secondary" th:href="@{/dashboard}">Join a session</a>
+        </div>
+        <p class="home-stats">
+            <span th:text="${sessionCount == 1 ? '1 session open' : sessionCount + ' sessions open'}">3 sessions open</span>
+            <span class="dot" aria-hidden="true"></span>
+            <span th:text="${hostingCount == 1 ? 'you are hosting 1' : 'you are hosting ' + hostingCount}">you are hosting 1</span>
+        </p>
+    </section>
+
+    <section>
+        <h2>How it works</h2>
+        <ol class="steps">
+            <li>
+                <h3>Start a session</h3>
+                <p>Give it a name and a short note, like "Friday night, nothing over two hours". You're the host, so only you can edit it or reset the votes.</p>
+            </li>
+            <li>
+                <h3>Everyone suggests a movie</h3>
+                <p>Type a title and we'll fill in the poster and genre for you. Add a blurb to make your case.</p>
+            </li>
+            <li>
+                <h3>Vote, then watch the winner</h3>
+                <p>Each session has a voting page. The movie with the most votes rises to the top, and you can leave a review afterwards.</p>
+            </li>
+        </ol>
+    </section>
+
+    <section th:unless="${#lists.isEmpty(popular)}">
+        <h2>Popular right now</h2>
+        <p class="muted">Need an idea? These are the movies people are watching this week.</p>
+        <ul class="poster-row">
+            <li th:each="movie : ${popular}">
+                <img th:src="${movie.posterUrl}" th:alt="${movie.title}" loading="lazy">
+                <span class="poster-title" th:text="${movie.title}">Alien</span>
+                <span class="poster-sub" th:text="${movie.year}">1979</span>
+            </li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

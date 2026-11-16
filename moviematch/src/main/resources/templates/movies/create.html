@@ -23,6 +23,11 @@
                 <input type="hidden" th:field="*{moviePosterUrl}" />
             </p>
             <p>
+                <label for="movieYear">Year (optional)</label>
+                <textarea id="movieYear" th:field="*{movieYear}" maxlength="4"></textarea>
+                <span th:if="${#fields.hasErrors('movieYear')}" th:errors="*{movieYear}"></span>
+            </p>
+            <p>
                 <label for="movieGenre">Movie Genre</label>
                 <select id="movieGenre" th:field="*{movieGenre}" required>
                     <option value="">Choose a Genre</option>
@@ -39,6 +44,26 @@
                 <label for="movieRating">Rating (1-10)</label>
                 <input id="movieRating" type="number" th:field="*{movieRating}" min="1" max="10" required>
                 <span th:if="${#fields.hasErrors('movieRating')}" th:errors="*{movieRating}"></span>
+            </p>
+            <p>
+                <label for="movieDirector">Director (optional)</label>
+                <textarea id="movieDirector" th:field="*{movieDirector}" maxlength="100"></textarea>
+                <span th:if="${#fields.hasErrors('movieDirector')}" th:errors="*{movieDirector}"></span>
+            </p>
+            <p>
+                <label for="movieWriter">Writer (optional)</label>
+                <textarea id="movieWriter" th:field="*{movieWriter}" maxlength="100"></textarea>
+                <span th:if="${#fields.hasErrors('movieWriter')}" th:errors="*{movieWriter}"></span>
+            </p>
+            <p>
+                <label for="movieComposer">Composer (optional)</label>
+                <textarea id="movieComposer" th:field="*{movieComposer}" maxlength="100"></textarea>
+                <span th:if="${#fields.hasErrors('movieComposer')}" th:errors="*{movieComposer}"></span>
+            </p>
+            <p>
+                <label for="movieCinematographer">Cinematographer (optional)</label>
+                <textarea id="movieCinematographer" th:field="*{movieCinematographer}" maxlength="100"></textarea>
+                <span th:if="${#fields.hasErrors('movieCinematographer')}" th:errors="*{movieCinematographer}"></span>
             </p>
             <button type="submit">Save movie</button>
         </form>

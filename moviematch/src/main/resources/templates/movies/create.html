@@ -40,6 +40,26 @@
                 <input id="movieRating" type="number" th:field="*{movieRating}" min="1" max="10" required>
                 <span th:if="${#fields.hasErrors('movieRating')}" th:errors="*{movieRating}"></span>
             </p>
+            <p>
+                <label for="movieDirector">Director (optional)</label>
+                <textarea id="movieDirector" th:field="*{movieDirector}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('movieDirector')}" th:errors="*{movieDirector}"></span>
+            </p>
+            <p>
+                <label for="movieWriter">Writer (optional)</label>
+                <textarea id="movieWriter" th:field="*{movieWriter}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('movieWriter')}" th:errors="*{movieWriter}"></span>
+            </p>
+            <p>
+                <label for="movieComposer">Composer (optional)</label>
+                <textarea id="movieComposer" th:field="*{movieComposer}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('movieComposer')}" th:errors="*{movieComposer}"></span>
+            </p>
+            <p>
+                <label for="movieCinematographer">Cinematographer (optional)</label>
+                <textarea id="movieCinematographer" th:field="*{movieCinematographer}" maxlength="1000"></textarea>
+                <span th:if="${#fields.hasErrors('movieCinematographer')}" th:errors="*{movieCinematographer}"></span>
+            </p>
             <button type="submit">Save movie</button>
         </form>
         <p><a th:href="@{/Asessions/{Sid}/movies/main(Sid=${AsessionId})}">View movies</a></p>

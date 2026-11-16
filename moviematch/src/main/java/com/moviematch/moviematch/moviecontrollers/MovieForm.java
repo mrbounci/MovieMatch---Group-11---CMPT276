@@ -51,6 +51,14 @@ public class MovieForm {
 
     private String movieSynopsis;
 
+    private String movieDirector;
+
+    private String movieWriter;
+
+    private String movieComposer;
+
+    private String movieCinematographer;
+
     public static MovieForm from(MovieInformation movie) {
         MovieForm form = new MovieForm();
         form.setMovieTitle(movie.getMovieTitle());
@@ -166,6 +174,42 @@ public class MovieForm {
     public void setMovieSynopsis(String movieSynopsis) {
         this.movieSynopsis = movieSynopsis;
     }
+
+    public String getMovieDirector() {
+        return this.movieDirector;
+    }
+
+    public void setMovieDirector(String movieDirector) {
+        this.movieDirector = movieDirector;
+    }
+
+    public String getMovieWriter() {
+        return this.movieWriter;
+    }
+
+    public void setMovieWriter(String movieWriter) {
+        this.movieWriter = movieWriter;
+    }
+
+    public String getMovieComposer() {
+        return this.movieComposer;
+    }
+
+    public void setMovieComposer(String movieComposer) {
+        this.movieComposer = movieComposer;
+    }
+
+    public String getMovieCinematographer() {
+        return this.movieCinematographer;
+    }
+
+    public void setMovieCinematographer(String movieCinematographer) {
+        this.movieCinematographer = movieCinematographer;
+    }
+
 }
+
+
+
 
 

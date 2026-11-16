@@ -30,7 +30,7 @@
 
 
         <!-- only the host can edit or remove movies -->
-        <p th:if="${Asession.canBeManagedBy(currentUserId)}">
+        <p th:if="${isAdmin or Asession.canBeManagedBy(currentUserId)}">
             <a th:href="@{/Asessions/{Sid}/movies/{id}/edit(Sid=${AsessionId},id=${movie.uid})}">Edit</a>
             <a th:href="@{/Asessions/{Sid}/movies/{id}/delete(Sid=${AsessionId},id=${movie.uid})}">Delete</a>
         </p>

@@ -16,8 +16,8 @@
                <span class="badge badge-host" th:if="${Asession.isHostedBy(currentUserId)}">You're the host</span></p>
             <p>Blurb: <span th:text="${Asession.sessionBlurb}"></span></p>
 
-            <!-- host-only -->
-            <p th:if="${Asession.canBeManagedBy(currentUserId)}">
+            <!-- host or admin only -->
+            <p th:if="${isAdmin or Asession.canBeManagedBy(currentUserId)}">
                 <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
                 <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
             </p>

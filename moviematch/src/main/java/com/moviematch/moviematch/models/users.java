@@ -11,6 +11,8 @@ public class users {
     private String username;
     private String displayname;
     private String password;
+    // "USER" or "ADMIN". Accounts made before this column existed have nothing here, which counts as USER.
+    private String role = "USER";
 
     public users() {}
 
@@ -50,5 +52,20 @@ public class users {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRole() {
+        if (role == null) {
+            return "USER";
+        }
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public boolean isAdmin() {
+        return "ADMIN".equals(role);
     }
 }

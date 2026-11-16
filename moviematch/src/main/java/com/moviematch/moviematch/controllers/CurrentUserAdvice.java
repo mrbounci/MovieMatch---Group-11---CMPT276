@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
  *   ${loggedIn}            true / false
  *   ${currentUserId}       the user's uid (Integer), or null
  *   ${currentPath}         the current URL path, e.g. /dashboard
+ *   ${isAdmin}             true if the logged-in user is an admin
  *   ${currentDisplayName}  the user's display name, or null
  *
  * This is what makes role-based views possible without changing every controller.
@@ -33,11 +34,23 @@ public class CurrentUserAdvice {
     public void addCurrentUser(HttpServletRequest request, Model model) {
         Integer userId = currentUserId(request);
         String displayName = null;
+        boolean admin = false;
 
         if (userId != null) {
-            displayName = userRepo.findById(userId)
-                    .map(users::getDisplayname)
-                    .orElse(null);
+            HttpSession session = request.getSession(false);
+            users user = userRepo.findById(userId).orElse(null);
+
+            if (user == null) {
+                // the account was deleted while they were logged in, so log them out
+                session.invalidate();
+                userId = null;
+            } else {
+                displayName = user.getDisplayname();
+                admin = user.isAdmin();
+                // keep the role saved in the login session up to date, so making
+                // or removing an admin takes effect on that person's next click
+                session.setAttribute("userRole", user.getRole());
+            }
         }
 
         model.addAttribute("loggedIn", userId != null);
@@ -45,6 +58,7 @@ public class CurrentUserAdvice {
         model.addAttribute("currentDisplayName", displayName);
         // the nav uses this to highlight the tab for the page you are on
         model.addAttribute("currentPath", request.getRequestURI());
+        model.addAttribute("isAdmin", admin);
     }
 
     /** The logged-in user's uid, or null if nobody is logged in. */
@@ -59,5 +73,18 @@ public class CurrentUserAdvice {
             return number.intValue();
         }
         return null;
+    }
+
+    /**
+     * True if the logged-in user is an admin.
+     * Reads the role from the login session, which addCurrentUser() refreshes
+     * from the database at the start of every request.
+     */
+    public static boolean isAdmin(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            return false;
+        }
+        return "ADMIN".equals(session.getAttribute("userRole"));
     }
 }

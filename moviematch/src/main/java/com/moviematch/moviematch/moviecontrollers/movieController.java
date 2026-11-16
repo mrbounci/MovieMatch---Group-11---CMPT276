@@ -161,9 +161,12 @@ public class movieController {
     }
 
 
-    // only the session's host can edit/delete movies or reset votes,
+    // only the session's host (or an admin) can edit/delete movies or reset votes,
     // even if someone types the URL in directly
     private void checkIsHost(SessionInformation session, HttpServletRequest request) {
+        if (session != null && CurrentUserAdvice.isAdmin(request)) {
+            return;
+        }
         Integer userId = CurrentUserAdvice.currentUserId(request);
         if (session == null || !session.canBeManagedBy(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can do that");

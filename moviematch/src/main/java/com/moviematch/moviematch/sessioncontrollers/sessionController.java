@@ -113,8 +113,11 @@ public class sessionController {
         return "redirect:/Asessions/main";
     }
 
-    // stops anyone who isn't the host, even if they type the URL in directly
+    // stops anyone who isn't the host (or an admin), even if they type the URL in directly
     private void checkIsHost(SessionInformation session, HttpServletRequest request) {
+        if (CurrentUserAdvice.isAdmin(request)) {
+            return;
+        }
         Integer userId = CurrentUserAdvice.currentUserId(request);
         if (!session.canBeManagedBy(userId)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Only the host can change this session");

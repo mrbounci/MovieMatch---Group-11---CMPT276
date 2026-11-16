@@ -67,6 +67,34 @@ public class TmdbClient {
         return movies;
     }
 
+    // returns up to 8 of the movies TMDB currently lists as popular (used on the home page)
+    @SuppressWarnings("unchecked")
+    public List<TmdbMovie> popular() {
+        Map<String, Object> body = http.get()
+                .uri(uri -> uri.path("/movie/popular")
+                        .queryParam("language", "en-US")
+                        .queryParam("page", 1)
+                        .build())
+                .retrieve()
+                .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+        List<TmdbMovie> movies = new ArrayList<>();
+        if (body != null && body.get("results") instanceof List<?> results) {
+            for (Object item : results) {
+                if (movies.size() == 8) {
+                    break;
+                }
+                if (item instanceof Map<?, ?> json) {
+                    TmdbMovie movie = TmdbMovie.fromJson((Map<String, Object>) json);
+                    if (movie.getPosterUrl() != null) {
+                        movies.add(movie);
+                    }
+                }
+            }
+        }
+        return movies;
+    }
+
     @SuppressWarnings("unchecked")
     public Map<String, String> crew(long tmdbId) {
         Map<String, Object> body = http.get()

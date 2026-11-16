@@ -4,18 +4,24 @@
 <!--
   Shared top bar. Put this at the top of <body> on any page:
       <nav th:replace="~{fragments/nav :: nav}"></nav>
-  ${loggedIn} and ${currentDisplayName} come from CurrentUserAdvice.
+  ${loggedIn}, ${currentDisplayName}, ${currentPath} and ${isAdmin} come from CurrentUserAdvice.
+  The tab for the page you are on gets the "active" class.
 -->
 <nav class="navbar" th:fragment="nav">
-    <a class="brand" th:href="@{/dashboard}">moviematch</a>
+    <a class="brand" th:href="@{/home}">
+        <span class="brand-mark" aria-hidden="true"></span>moviematch
+    </a>
 
     <div class="nav-links" th:if="${loggedIn}">
-        <a th:href="@{/dashboard}">Sessions</a>
-        <a th:href="@{/host}">Hosting</a>
+        <a th:href="@{/home}" th:classappend="${currentPath == '/home'} ? 'active'">Home</a>
+        <a th:href="@{/dashboard}" th:classappend="${currentPath == '/dashboard' or #strings.startsWith(currentPath, '/Asessions')} ? 'active'">Sessions</a>
+        <a th:href="@{/host}" th:classappend="${currentPath == '/host'} ? 'active'">Hosting</a>
+        <!-- admins only -->
+        <a th:if="${isAdmin}" th:href="@{/admin}" th:classappend="${currentPath == '/admin'} ? 'active'">Admin</a>
     </div>
 
     <div class="nav-user" th:if="${loggedIn}">
-        <span th:text="${currentDisplayName}">Jacob</span>
+        <a class="nav-name" th:href="@{/account}" th:text="${currentDisplayName}">Jacob</a>
         <form method="post" th:action="@{/logout}">
             <button type="submit">Log out</button>
         </form>

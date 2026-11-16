@@ -22,11 +22,11 @@
                 <span th:if="${#fields.hasErrors('movieTitle')}" th:errors="*{movieTitle}"></span>
                 <input type="hidden" th:field="*{moviePosterUrl}" />
             </p>
-            <p>
+            <!-- <p>
                 <label for="movieYear">Year (optional)</label>
                 <textarea id="movieYear" th:field="*{movieYear}" maxlength="4"></textarea>
                 <span th:if="${#fields.hasErrors('movieYear')}" th:errors="*{movieYear}"></span>
-            </p>
+            </p> -->
             <p>
                 <label for="movieGenre">Movie Genre</label>
                 <select id="movieGenre" th:field="*{movieGenre}" required>

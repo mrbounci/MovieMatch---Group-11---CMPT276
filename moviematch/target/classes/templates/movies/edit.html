@@ -24,9 +24,9 @@
                 <span th:if="${#fields.hasErrors('movieTitle')}" th:errors="*{movieTitle}"></span>
                 <input type="hidden" th:field="*{moviePosterUrl}" />
             </p>
-            <p>
+              <p>
                 <label for="movieYear">Year (optional)</label>
-                <textarea id="movieYear" th:field="*{movieYear}" maxlength="1000"></textarea>
+                <textarea id="movieYear" th:field="*{movieYear}" maxlength="4"></textarea>
                 <span th:if="${#fields.hasErrors('movieYear')}" th:errors="*{movieYear}"></span>
             </p>
             <p>
@@ -36,11 +36,6 @@
                     <option th:each="genre : ${genres}" th:value="${genre}" th:text="${genre}"></option>
                 </select>
                 <span th:if="${#fields.hasErrors('movieGenre')}" th:errors="*{movieGenre}"></span>
-            </p>
-            <p>
-                <label for="movieSynopsis">Synopsis (optional)</label>
-                <textarea id="movieSynopsis" th:field="*{movieSynopsis}" maxlength="1000"></textarea>
-                <span th:if="${#fields.hasErrors('movieSynopsis')}" th:errors="*{movieSynopsis}"></span>
             </p>
             <p>
                 <label for="movieBlurb">Blurb (optional)</label>
@@ -54,22 +49,22 @@
             </p>
             <p>
                 <label for="movieDirector">Director (optional)</label>
-                <textarea id="movieDirector" th:field="*{movieDirector}" maxlength="1000"></textarea>
+                <textarea id="movieDirector" th:field="*{movieDirector}" maxlength="100"></textarea>
                 <span th:if="${#fields.hasErrors('movieDirector')}" th:errors="*{movieDirector}"></span>
             </p>
             <p>
                 <label for="movieWriter">Writer (optional)</label>
-                <textarea id="movieWriter" th:field="*{movieWriter}" maxlength="1000"></textarea>
+                <textarea id="movieWriter" th:field="*{movieWriter}" maxlength="100"></textarea>
                 <span th:if="${#fields.hasErrors('movieWriter')}" th:errors="*{movieWriter}"></span>
             </p>
             <p>
                 <label for="movieComposer">Composer (optional)</label>
-                <textarea id="movieComposer" th:field="*{movieComposer}" maxlength="1000"></textarea>
+                <textarea id="movieComposer" th:field="*{movieComposer}" maxlength="100"></textarea>
                 <span th:if="${#fields.hasErrors('movieComposer')}" th:errors="*{movieComposer}"></span>
             </p>
             <p>
                 <label for="movieCinematographer">Cinematographer (optional)</label>
-                <textarea id="movieCinematographer" th:field="*{movieCinematographer}" maxlength="1000"></textarea>
+                <textarea id="movieCinematographer" th:field="*{movieCinematographer}" maxlength="100"></textarea>
                 <span th:if="${#fields.hasErrors('movieCinematographer')}" th:errors="*{movieCinematographer}"></span>
             </p>
             <button type="submit">Update movie</button>

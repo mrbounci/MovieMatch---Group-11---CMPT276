@@ -70,6 +70,10 @@ public class MovieForm {
         form.setMoviePosterUrl(movie.getMoviePosterUrl()); 
         form.setMovieYear(movie.getMovieYear());
         form.setMovieSynopsis(movie.getMovieSynopsis());
+        form.setMovieDirector(movie.getMovieDirector());
+        form.setMovieWriter( movie.getMovieWriter());
+        form.setMovieComposer(movie.getMovieComposer());
+        form.setMovieCinematographer( movie.getMovieCinematographer());
         return form;
     }
 
@@ -83,6 +87,10 @@ public class MovieForm {
         movie.setMoviePosterUrl(moviePosterUrl);
         movie.setMovieYear(movieYear);
         movie.setMovieSynopsis(movieSynopsis);
+        movie.setMovieDirector(movieDirector);
+        movie.setMovieWriter(movieWriter);
+        movie.setMovieComposer(movieComposer);
+        movie.setMovieCinematographer(movieCinematographer);
     }
    
     public long getUid() {

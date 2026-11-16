@@ -1,7 +1,9 @@
 package com.moviematch.moviematch.moviemodels;
 
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
-
+import com.moviematch.moviematch.reviews.MovieReview;
+import java.util.ArrayList;
+import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -60,6 +62,8 @@ public class MovieInformation {
     @ManyToOne
     @JoinColumn(name = "session_id")
     private SessionInformation session;
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.REMOVE)
+    private List<MovieReview> reviews = new ArrayList<>();
 
     private String moviePosterUrl; 
 

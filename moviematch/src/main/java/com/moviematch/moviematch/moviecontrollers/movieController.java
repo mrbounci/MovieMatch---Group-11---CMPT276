@@ -73,10 +73,10 @@ public class movieController {
 
             try {
                 Map<String, String> crew = TmdbClient.crew(form.getTmdbMovieId());
-                movie.setMovieDirector(crew.get("director"));
-                movie.setMovieWriter(crew.get("writer"));
-                movie.setMovieComposer(crew.get("composer"));
-                movie.setMovieCinematographer(crew.get("cinematographer"));
+                if (isBlank(movie.getMovieDirector())) movie.setMovieDirector(crew.get("director"));
+                if (isBlank(movie.getMovieWriter())) movie.setMovieWriter(crew.get("writer"));
+                if (isBlank(movie.getMovieComposer())) movie.setMovieComposer(crew.get("composer"));
+                if (isBlank(movie.getMovieCinematographer())) movie.setMovieCinematographer(crew.get("cinematographer"));
                 movie.setMovieCast(crew.get("cast"));
             } catch (RuntimeException e) {
                 System.out.println("TMDB look up failed");
@@ -89,6 +89,9 @@ public class movieController {
         return "redirect:/Asessions/"+ Sid +"/movies/main";
     }
 
+    private boolean isBlank(String s) {
+        return s == null || s.isBlank();
+    }
 
     @GetMapping("/Asessions/{Sid}/movies/{id}")
     public String showMovie(@PathVariable long id, @PathVariable long Sid, Model model) {

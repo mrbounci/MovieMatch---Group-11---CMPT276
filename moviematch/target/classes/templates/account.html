@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your account - MovieMatch</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{fragments/nav :: nav}"></nav>
+
+<main>
+    <!-- From AccountController.accountPage(): ${account} is the logged-in user, ${adminCodeSet} is true/false -->
+    <h1>Your account</h1>
+
+    <div class="alert alert-success" th:if="${param.on}">Admin is on. You now have the Admin tab.</div>
+    <div class="alert alert-success" th:if="${param.off}">Admin is off. You're a regular user again.</div>
+    <div class="alert alert-error" th:if="${param.wrong}">That admin code isn't right. Check it and try again.</div>
+
+    <dl class="details">
+        <dt>Display name</dt>
+        <dd th:text="${account.displayname}">Jacob</dd>
+        <dt>Username</dt>
+        <dd th:text="${account.username}">jacob</dd>
+        <dt>Role</dt>
+        <dd th:text="${account.admin} ? 'Admin' : 'User'">User</dd>
+    </dl>
+
+    <h2>Admin access</h2>
+
+    <!-- already an admin: offer to turn it off -->
+    <th:block th:if="${account.admin}">
+        <p>You're an admin. You can manage every account and session from the
+           <a th:href="@{/admin}">Admin tab</a>, and edit or delete any session or movie.</p>
+        <form method="post" th:action="@{/account/admin/off}">
+            <button type="submit" class="btn-secondary">Turn off admin</button>
+        </form>
+    </th:block>
+
+    <!-- not an admin: turn it on with the admin code -->
+    <th:block th:unless="${account.admin}">
+        <form method="post" th:action="@{/account/admin/on}" th:if="${adminCodeSet}">
+            <p>
+                <label for="code">Admin code</label>
+                <input id="code" name="code" type="password" required autocomplete="off">
+                <span class="hint">Whoever runs the site has this code. An existing admin can also make you one from the Admin tab.</span>
+            </p>
+            <button type="submit">Turn on admin</button>
+        </form>
+        <p class="muted" th:unless="${adminCodeSet}">Turning admin on with a code is switched off on this server.
+           An existing admin can make you one from the Admin tab.</p>
+    </th:block>
+</main>
+</body>
+</html>

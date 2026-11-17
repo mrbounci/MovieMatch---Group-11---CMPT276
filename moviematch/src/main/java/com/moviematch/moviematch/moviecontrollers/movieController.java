@@ -67,8 +67,10 @@ public class movieController {
         }
 
         MovieInformation movie = new MovieInformation();
+        form.applyTo(movie); 
 
         if (form.getTmdbMovieId() != null && TmdbClient.isConfigured()) {
+
             try {
                 Map<String, String> crew = TmdbClient.crew(form.getTmdbMovieId());
                 movie.setMovieDirector(crew.get("director"));
@@ -81,7 +83,6 @@ public class movieController {
             }
         }
 
-        form.applyTo(movie);
         SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
         movie.setSession(session);
         MovieRepository.save(movie);

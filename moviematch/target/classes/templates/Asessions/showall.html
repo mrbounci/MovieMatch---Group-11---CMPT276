@@ -35,8 +35,8 @@
                     <td>
                         <a th:href="@{/Asessions/{id}/movies/main(id=${Asession.uid})}">Go to Voting Lobby</a>
                         <a th:href="@{/Asessions/{id}(id=${Asession.uid})}">View</a>
-                        <!-- host-only -->
-                        <th:block th:if="${Asession.canBeManagedBy(currentUserId)}">
+                        <!-- host or admin only -->
+                        <th:block th:if="${isAdmin or Asession.canBeManagedBy(currentUserId)}">
                             <a th:href="@{/Asessions/{id}/edit(id=${Asession.uid})}">Edit</a>
                             <a th:href="@{/Asessions/{id}/delete(id=${Asession.uid})}">Delete</a>
                         </th:block>

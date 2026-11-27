@@ -20,8 +20,11 @@ import com.moviematch.moviematch.moviemodels.MovieInformation;
 import com.moviematch.moviematch.moviemodels.MovieRepository;
 import com.moviematch.moviematch.sessionmodels.SessionRepository;
 import com.moviematch.moviematch.sessionmodels.SessionInformation;
+import com.moviematch.moviematch.moviemodels.MovieVoteRepository;
+import com.moviematch.moviematch.moviemodels.Vote;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.moviematch.moviematch.tmdb.TmdbClient;
 
@@ -30,11 +33,13 @@ public class movieController {
     private final MovieRepository MovieRepository;
     private final SessionRepository SessionRepository;
     private final TmdbClient TmdbClient;
+    private final MovieVoteRepository MovieVoteRepository;
 
-    public movieController(MovieRepository MovieRepository, SessionRepository SessionRepository, TmdbClient TmdbClient) {
+    public movieController(MovieRepository MovieRepository, SessionRepository SessionRepository, TmdbClient TmdbClient, MovieVoteRepository MovieVoteRepository) {
         this.MovieRepository = MovieRepository;
         this.SessionRepository = SessionRepository;
         this.TmdbClient = TmdbClient;
+        this.MovieVoteRepository = MovieVoteRepository;
     }
    
     @GetMapping("/Asessions/{Sid}/movies/new")
@@ -47,11 +52,19 @@ public class movieController {
 
 
     @GetMapping({"/Asessions/{Sid}/movies/main", "/Asessions/{Sid}/movies/main"})
-    public String showMovies(@PathVariable long Sid, Model model) {
+    public String showMovies(@PathVariable long Sid, Model model, HttpServletRequest request) {
         SessionInformation session = SessionRepository.findById(Sid).orElseThrow();
         model.addAttribute("movies", MovieRepository.findBySessionOrderByMovieVoteCountDescUidAsc(session));
         model.addAttribute("AsessionId", Sid);
         model.addAttribute("Asession", session);
+
+        Integer voter = CurrentUserAdvice.currentUserId(request);
+        Optional<Vote> existingVote = Optional.empty();
+        if (voter != null) {
+            existingVote = MovieVoteRepository.findBySessionIdAndUserId(Sid, voter.longValue());
+        }
+        model.addAttribute("hasVoted", existingVote.isPresent());
+        model.addAttribute("votedMovieId", existingVote.map(Vote::getMovieId).orElse(null));
         return "movies/showall";
     }
 
@@ -183,16 +196,37 @@ public class movieController {
     }
 
 
-    @PostMapping("/Asessions/{Sid}/movies/{id}/vote")
-    public String voteMovie(@PathVariable long Sid, @PathVariable long id) {
-    MovieInformation movie = findMovieInformation(id);
-    if (movie.getSession() == null || movie.getSession().getUid() != Sid) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not in this session");
-    }
-    movie.setMovieCount(movie.getMovieVoteCount() + 1);
-    MovieRepository.save(movie);
-    return "redirect:/Asessions/" + Sid + "/movies/main";
+    /*@PostMapping("/Asessions/{Sid}/movies/{id}/vote")
+    public String voteMovie(@PathVariable long Sid, @PathVariable long id, HttpServletRequest request) {
+        MovieInformation movie = findMovieInformation(id);
+        if (movie.getSession() == null || movie.getSession().getUid() != Sid) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Movie not in this session");
+        }
+        Integer voter = CurrentUserAdvice.currentUserId(request);
+
+        Optional<Vote> existing = MovieVoteRepository.findBySessionIdAndUserId(Sid, voter);
+        movie.setMovieCount(movie.getMovieVoteCount() + 1);
+        MovieRepository.save(movie);
+        return "redirect:/Asessions/" + Sid + "/movies/main";
    
+    }*/
+
+    @PostMapping("/Asessions/{Sid}/movies/{id}/vote")
+    public String voteMovie(@PathVariable long Sid, @PathVariable long id, HttpServletRequest request) {
+        MovieInformation movie = findMovieInformation(id);
+
+        Integer voter = CurrentUserAdvice.currentUserId(request);
+        if (voter == null) {
+            return "redirect:/login/";
+        }
+        if (MovieVoteRepository.findBySessionIdAndUserId(Sid, voter.longValue()).isPresent()) {
+            return "redirect:/Asessions/" + Sid + "/movies/main";
+        }
+
+        MovieVoteRepository.save(new Vote(null, Sid, voter.longValue(), id));
+        movie.setMovieCount(movie.getMovieVoteCount() + 1);
+        MovieRepository.save(movie);
+        return "redirect:/Asessions/" + Sid + "/movies/main";
     }
 
     @PostMapping("/Asessions/{Sid}/movies/reset")

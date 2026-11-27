@@ -58,7 +58,10 @@
                         <span th:text="${movie.movieVoteCount}"></span>
                         <form method="post"
                               th:action="@{/Asessions/{Sid}/movies/{id}/vote(Sid=${AsessionId},id=${movie.uid})}">
-                            <button type="submit">Vote</button>
+                            <button type="submit"
+                                th:disabled="${hasVoted}"
+                                th:text="${votedMovieId == movie.uid} ? 'Voted' : 'Vote'">
+                            Vote</button>
                         </form>
                     </td>
                     <td>
